@@ -92,3 +92,24 @@ def test_human_pause_speed_flap_and_comparison_lock(monkeypatch,tmp_path):
     assert frames[4][0]>frames[3][0]
     assert frames[5][0]<frames[4][0]  # Restart resets simulation steps.
     assert '1.00x' in frames[7][2] and '1.00x' in frames[8][2]
+
+
+def test_cli_loads_improved_submission_checkpoint(monkeypatch, tmp_path):
+    import sys
+    from flappy_ai import __main__ as cli
+
+    delivered = []
+
+    def play(config, model, seed, speed):
+        delivered.append(QAgent.load(model))
+
+    monkeypatch.chdir(tmp_path)
+    monkeypatch.setattr(ui, 'play', play)
+    monkeypatch.setattr(sys, 'argv', ['flappy_ai', 'play'])
+    cli.main()
+
+    agent, = delivered
+    assert agent.config.game.target_score == 100
+    assert agent.config.training.seed == 424242
+    assert agent.config.rewards.death == -15
+    assert agent.episodes == 24000 and agent.q

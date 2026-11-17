@@ -1,17 +1,24 @@
 """Windows-friendly command line entry point."""
 import argparse
 import json
+from pathlib import Path
 from .config import Config
 from .agent import QAgent
 from .training import train, evaluate
 from .storage import unique_directory
 
 
+DEFAULT_MODEL = (
+    Path(__file__).resolve().parents[1]
+    / 'experiments' / 'study_20261117_122405' / 'recommended_compatible_agent.npz'
+)
+
+
 def main():
     parser = argparse.ArgumentParser(description='Flappy Bird AI - tabular Q-Learning')
     sub = parser.add_subparsers(dest='command', required=True)
     p = sub.add_parser('play')
-    p.add_argument('--model', default='artifacts/agent.npz')
+    p.add_argument('--model', default=DEFAULT_MODEL, help='Saved policy (default: improved submission agent)')
     p.add_argument('--config')
     p.add_argument('--seed', type=int, default=2026)
     p.add_argument('--speed', type=float, default=1)
@@ -24,7 +31,7 @@ def main():
     p.add_argument('--checkpoint-seconds', type=float, default=60,
                    help='Maximum wall seconds between automatic latest checkpoints')
     p = sub.add_parser('evaluate')
-    p.add_argument('--model', default='artifacts/agent.npz')
+    p.add_argument('--model', default=DEFAULT_MODEL, help='Saved policy (default: improved submission agent)')
     p.add_argument('--seeds', type=int, nargs='+', default=list(range(100000, 100020)))
     p.add_argument('--output', default='artifacts/evaluation')
     p = sub.add_parser('plot', help='Regenerate reward, score and epsilon graphs from an existing CSV')

@@ -1,0 +1,3 @@
+agent,training_seed,trained_episodes,mean,median,p10,lower_tail_mean,minimum,best,success_percent,training_minutes,states,unknown_fraction
+baseline,historical 42,24000,19.265,12.0,2.0,1.05,0,100,1.0,7.1802122983329655,7649,7.665583301560997e-05
+rewards_s424242,424242,24000,56.615,56.0,7.0,4.2,1,100,27.500000000000004,8.244955876666548,7955,6.195786864931847e-07
