@@ -1,0 +1,8 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[project]
+name = "flappy-bird-tabular-ai"
+version = "1.0.0"
+description = "Procedural Flappy Bird with tabular Q-learning"
+requires-python = ">=3.11"

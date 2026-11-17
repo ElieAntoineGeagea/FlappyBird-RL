@@ -1,0 +1,226 @@
+{
+  "model": "C:\\Users\\User\\Documents\\FlappyBird-RL\\artifacts\\agent.npz",
+  "episodes": 24000,
+  "states": 7649,
+  "epsilon": 0.01,
+  "duration": 430.81273789997795,
+  "checkpoints": [
+    {
+      "file": "checkpoint_1000.npz",
+      "episodes": 1000,
+      "states": 501,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_2000.npz",
+      "episodes": 2000,
+      "states": 793,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_3000.npz",
+      "episodes": 3000,
+      "states": 1550,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_4000.npz",
+      "episodes": 4000,
+      "states": 2431,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_5000.npz",
+      "episodes": 5000,
+      "states": 3855,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_6000.npz",
+      "episodes": 6000,
+      "states": 5046,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_7000.npz",
+      "episodes": 7000,
+      "states": 5987,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_8000.npz",
+      "episodes": 8000,
+      "states": 6549,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_9000.npz",
+      "episodes": 9000,
+      "states": 6879,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_10000.npz",
+      "episodes": 10000,
+      "states": 7022,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_11000.npz",
+      "episodes": 11000,
+      "states": 7212,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_12000.npz",
+      "episodes": 12000,
+      "states": 7323,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_13000.npz",
+      "episodes": 13000,
+      "states": 7379,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_14000.npz",
+      "episodes": 14000,
+      "states": 7448,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_15000.npz",
+      "episodes": 15000,
+      "states": 7492,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_16000.npz",
+      "episodes": 16000,
+      "states": 7526,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_17000.npz",
+      "episodes": 17000,
+      "states": 7547,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_18000.npz",
+      "episodes": 18000,
+      "states": 7564,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_19000.npz",
+      "episodes": 19000,
+      "states": 7582,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_20000.npz",
+      "episodes": 20000,
+      "states": 7599,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_21000.npz",
+      "episodes": 21000,
+      "states": 7609,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_22000.npz",
+      "episodes": 22000,
+      "states": 7622,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_23000.npz",
+      "episodes": 23000,
+      "states": 7634,
+      "finite": true
+    },
+    {
+      "file": "checkpoint_24000.npz",
+      "episodes": 24000,
+      "states": 7649,
+      "finite": true
+    }
+  ],
+  "history_rows": 24000,
+  "histories_match": true,
+  "epsilon_schedule_matches": true,
+  "default_play_seed_score": 17,
+  "evaluations": [
+    {
+      "folder": "evaluation",
+      "exact_match": true,
+      "episodes": 20,
+      "average_score": 20.45,
+      "best_score": 68,
+      "success_rate": 0.0,
+      "success_definition": "Reach 100 pipes",
+      "training_duration_seconds": 430.81273789997795,
+      "seeds": [
+        100000,
+        100001,
+        100002,
+        100003,
+        100004,
+        100005,
+        100006,
+        100007,
+        100008,
+        100009,
+        100010,
+        100011,
+        100012,
+        100013,
+        100014,
+        100015,
+        100016,
+        100017,
+        100018,
+        100019
+      ],
+      "exploration": false
+    },
+    {
+      "folder": "evaluation_fresh",
+      "exact_match": true,
+      "episodes": 20,
+      "average_score": 18.4,
+      "best_score": 72,
+      "success_rate": 0.0,
+      "success_definition": "Reach 100 pipes",
+      "training_duration_seconds": 430.81273789997795,
+      "seeds": [
+        200000,
+        200001,
+        200002,
+        200003,
+        200004,
+        200005,
+        200006,
+        200007,
+        200008,
+        200009,
+        200010,
+        200011,
+        200012,
+        200013,
+        200014,
+        200015,
+        200016,
+        200017,
+        200018,
+        200019
+      ],
+      "exploration": false
+    }
+  ],
+  "negative_pipe_width_accepted": true
+}
