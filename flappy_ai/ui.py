@@ -1,6 +1,5 @@
 """Original procedural artwork and Pygame interface."""
 import math
-from pathlib import Path
 import pygame
 from .environment import Environment
 from .agent import QAgent
@@ -42,7 +41,13 @@ class Canvas:
         pygame.draw.polygon(bird,(249,102,58),[(38,23),(51,27),(38,30)])
         bird=pygame.transform.rotate(bird,max(-60,min(25,-env.velocity*5)))
         s.blit(bird,bird.get_rect(center=(g.bird_x,env.y)))
-        self.text(label,18,14,BG); self.text(str(env.score),g.width//2-12,42,WHITE,True)
+        self.text(label,18,14,BG)
+        score = self.big.render(str(env.score), True, WHITE)
+        max_width = max(1, g.width - 24)
+        if score.get_width() > max_width:
+            height = max(1, round(score.get_height() * max_width / score.get_width()))
+            score = pygame.transform.smoothscale(score, (max_width, height))
+        s.blit(score, score.get_rect(midtop=(g.width // 2, 42)))
     def panel(self,lines):
         overlay=pygame.Surface(self.screen.get_size(),pygame.SRCALPHA); overlay.fill((10,20,40,215)); self.screen.blit(overlay,(0,0))
         y=120
@@ -77,18 +82,13 @@ class TrainingView(Canvas):
             if not self.paused: return True
 
 
-def play(config, model='artifacts/agent.npz',seed=2026,speed=1.0):
-    agent=None
-    if Path(model).exists():
-        try:
-            agent=QAgent.load(model); config=agent.config
-        except (OSError, ValueError) as error:
-            print(f'Cannot load AI model {model}: {error}. Human mode remains available.', flush=True)
-    if agent is None and not Path(model).exists():
-        print(f'AI model not found: {model}. Human mode is available; load a valid model for AI/comparison.', flush=True)
-    view=Canvas(config); env=Environment(config); env.reset(seed)
+def play(config, model, seed=2026, speed=1.0):
+    agent = None
+    view = Canvas(config)
+    env = Environment(config, limited=False)
+    env.reset(seed)
     mode='menu'; paused=False; accumulator=0.0; running=True; comparison=False; pending_flap=False
-    human_score=None; message='' if agent else 'AI unavailable: check model path.'; comparison_message=''
+    human_score=None; message=''; comparison_message=''
     while running:
         dt=min(view.clock.tick(60)/1000,.1)
         for event in pygame.event.get():
@@ -101,7 +101,20 @@ def play(config, model='artifacts/agent.npz',seed=2026,speed=1.0):
             if not comparison and k in (pygame.K_MINUS,pygame.K_KP_MINUS): speed=max(.25,speed-.25)
             if mode=='menu':
                 if k in (pygame.K_h,pygame.K_a,pygame.K_c):
-                    if k!=pygame.K_h and agent is None: message='Train an agent first (see README).'; continue
+                    if k != pygame.K_h and agent is None:
+                        try:
+                            agent = QAgent.load(model)
+                        except (OSError, ValueError) as error:
+                            print(f'Cannot load AI model {model}: {error}. Human mode remains available.', flush=True)
+                            message = 'Could not load the bundled AI.'
+                            continue
+                    flight_config = config if k == pygame.K_h else agent.config
+                    if env.config is not flight_config:
+                        env = Environment(flight_config, limited=False)
+                        view.config = flight_config
+                        size = (env.g.width, env.g.height)
+                        if view.screen.get_size() != size:
+                            view.screen = pygame.display.set_mode(size)
                     comparison=k==pygame.K_c; mode='human' if k!=pygame.K_a else 'ai'
                     env.reset(seed); accumulator=0; pending_flap=False; human_score=None; message=''
                     if comparison: speed=1.0
@@ -114,6 +127,8 @@ def play(config, model='artifacts/agent.npz',seed=2026,speed=1.0):
                 mode='human' if comparison or human_score is None else 'ai'; env.reset(seed); accumulator=0; pending_flap=False
             elif mode=='compare_next' and k==pygame.K_RETURN:
                 mode='ai'; env.reset(seed); accumulator=0; pending_flap=False
+        if not running:
+            break
         if mode in ('human','ai') and not paused:
             accumulator+=dt*speed
             while accumulator>=1/60 and not env.done:
@@ -134,13 +149,13 @@ def play(config, model='artifacts/agent.npz',seed=2026,speed=1.0):
                 else:
                     human_score=None if mode=='human' else -1; mode='over'
         view.scene(env,f'{mode.upper()}  |  {speed:.2f}x')
-        if mode=='menu': view.panel(['Flappy Bird AI','REINFORCEMENT LEARNING','H   Human flight','A   Trained AI','C   Human vs AI (same seed)','Q   Quit',message or 'Space flap | P pause | R restart','+ / - speed | Esc menu'])
+        if mode=='menu': view.panel(['Flappy Bird AI','H — Human flight','A — Watch AI','C — Human vs AI','Q — Quit','Space — Flap | P — Pause | R — Restart','+ / - — Speed | Esc — Menu',message])
         elif paused: view.panel(['Paused','P resume | Esc menu'])
         elif mode=='compare_next': view.panel(['Your flight is complete',f'Human score: {human_score}','Enter: AI flies the same seed'])
         elif mode=='over':
             lines=['Flight complete',f'Score: {env.score}  ({env.reason})']
             if comparison: lines += [f'Human {human_score} vs AI {env.score}',comparison_message]
             lines += ['R restart | Esc menu']; view.panel(lines)
-        else: view.text('Space flap  |  P pause  |  Esc menu',16,config.game.height-35,BG)
+        else: view.text('Space flap  |  P pause  |  Esc menu',16,env.g.height-35,BG)
         pygame.display.flip()
     view.close()

@@ -1,3 +1,4 @@
+import csv
 import json
 import numpy as np
 import pytest
@@ -67,15 +68,24 @@ def test_serialization(tmp_path):
 
 
 def test_evaluation_is_deterministic_and_does_not_learn(tmp_path):
-    a=QAgent(Config()); before=(len(a.q),a.epsilon,a.episodes)
+    config = Config()
+    config.game.max_steps = 2
+    a = QAgent(config)
+    before = (len(a.q), a.epsilon, a.episodes)
     x=evaluate(a,[100,101],tmp_path/'a'); y=evaluate(a,[100,101],tmp_path/'b')
     assert x==y and before==(len(a.q),a.epsilon,a.episodes)
-    assert (tmp_path/'a'/'evaluation.csv').exists()
+    with (tmp_path/'a'/'evaluation.csv').open(newline='') as handle:
+        assert [(row['steps'], row['reason']) for row in csv.DictReader(handle)] == [
+            ('2', 'time_limit'), ('2', 'time_limit')]
     assert x['success_rate']==0
 
 
 def test_short_training(tmp_path):
-    a=QAgent(Config()); rows=train(a,3,tmp_path)
+    config = Config()
+    config.game.max_steps = 2
+    a = QAgent(config)
+    rows = train(a, 3, tmp_path)
+    assert [(row['steps'], row['reason']) for row in rows] == [(2, 'time_limit')] * 3
     assert len(rows)==3 and a.episodes==3 and len(a.q)>0
     assert QAgent.load(next(tmp_path.glob('run_*/agent.npz'))).episodes==3
 
@@ -101,3 +111,20 @@ def test_different_seeds_change_course():
 def test_nonfinite_rewards_rejected():
     c=Config(); c.rewards.survive=float('nan')
     with pytest.raises(ValueError): c.validate()
+
+
+def test_unlimited_flight_scores_past_both_old_targets():
+    class CenteredCourse(Environment):
+        def new_pipe(self, x):
+            return Pipe(x, self.g.ground / 2)
+
+    env = CenteredCourse(Config(), limited=False)
+    while env.score < 1001 and not env.done:
+        env.step(int(env.y >= env.g.ground / 2 and env.velocity >= 0))
+        assert len(env.pipes) == 3
+    assert env.score == 1001 and not env.done
+    assert env.steps > env.g.max_steps
+
+    while not env.done:
+        env.step(0)
+    assert env.reason == 'collision'

@@ -9,8 +9,9 @@ class Pipe:
     passed: bool = False
 
 class Environment:
-    def __init__(self, config):
+    def __init__(self, config, *, limited=True):
         self.config = config
+        self.limited = limited
         self.g = config.game
         self.reset(0)
 
@@ -71,7 +72,7 @@ class Environment:
                     p.passed = True
                     self.score += 1
                     reward += r.pipe
-            if self.score >= g.target_score or self.steps >= g.max_steps:
+            if self.limited and (self.score >= g.target_score or self.steps >= g.max_steps):
                 self.done = True
                 self.reason = 'target' if self.score >= g.target_score else 'time_limit'
         while self.pipes[0].x + g.pipe_width < 0:

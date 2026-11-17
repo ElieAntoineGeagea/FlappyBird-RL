@@ -18,7 +18,6 @@ def main():
     parser = argparse.ArgumentParser(description='Flappy Bird AI - tabular Q-Learning')
     sub = parser.add_subparsers(dest='command', required=True)
     p = sub.add_parser('play')
-    p.add_argument('--model', default=DEFAULT_MODEL, help='Saved policy (default: improved submission agent)')
     p.add_argument('--config')
     p.add_argument('--seed', type=int, default=2026)
     p.add_argument('--speed', type=float, default=1)
@@ -43,7 +42,7 @@ def main():
             from .ui import play
             if not 0.25 <= args.speed <= 8:
                 raise ValueError('Speed must be between 0.25 and 8')
-            play(Config.load(args.config), args.model, args.seed, args.speed)
+            play(Config.load(args.config), DEFAULT_MODEL, args.seed, args.speed)
         elif args.command == 'train':
             if args.resume and args.config:
                 raise ValueError('Resume uses checkpoint configuration; omit --config')

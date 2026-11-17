@@ -23,16 +23,40 @@ def test_menu_comparison_and_restart(monkeypatch,tmp_path):
     c=Config(); c.game.max_steps=2
     model=tmp_path/'agent.npz'; QAgent(c).save(model)
     class Clock:
-        def tick(self,*args): return 34
-    original=ui.Canvas
-    class FastCanvas(original):
-        def __init__(self,*args,**kwargs):
-            super().__init__(*args,**kwargs); self.clock=Clock()
-    monkeypatch.setattr(ui,'Canvas',FastCanvas)
-    batches=iter([[pygame.K_h],[pygame.K_r],[pygame.K_ESCAPE],[pygame.K_c],[pygame.K_RETURN],[],[pygame.K_r],[pygame.K_ESCAPE],[pygame.K_a],[pygame.K_ESCAPE],[pygame.K_q]])
-    monkeypatch.setattr(pygame.event,'get',lambda: [pygame.event.Event(pygame.KEYDOWN,key=k) for k in next(batches,[pygame.K_q])])
-    ui.play(c,str(model))
-    assert len(list((tmp_path/'artifacts'/'comparisons').glob('comparison_*.csv')))==1
+        def tick(self, *args):
+            return 100
+
+    current = None
+    phases = iter([pygame.K_c, pygame.K_RETURN, pygame.K_r, pygame.K_ESCAPE, pygame.K_q])
+    expected = iter(['MENU', 'COMPARE_NEXT', 'OVER', 'HUMAN', 'MENU'])
+    next_screen = next(expected)
+
+    class FastCanvas(ui.Canvas):
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.clock = Clock()
+
+        def scene(self, env, label=''):
+            nonlocal current
+            assert not env.limited
+            current = label.split()[0]
+            super().scene(env, label)
+
+    frame_budget = iter(range(120))
+
+    def events():
+        nonlocal next_screen
+        assert next(frame_budget, None) is not None, current
+        if current == next_screen:
+            next_screen = next(expected, None)
+            return [pygame.event.Event(pygame.KEYDOWN, key=next(phases))]
+        return []
+
+    monkeypatch.setattr(ui, 'Canvas', FastCanvas)
+    monkeypatch.setattr(pygame.event, 'get', events)
+    ui.play(c, model)
+    assert len(list((tmp_path/'artifacts'/'comparisons').glob('comparison_*.csv'))) == 1
+
 
 
 def test_training_pause_resume(monkeypatch):
@@ -113,3 +137,39 @@ def test_cli_loads_improved_submission_checkpoint(monkeypatch, tmp_path):
     assert agent.config.training.seed == 424242
     assert agent.config.rewards.death == -15
     assert agent.episodes == 24000 and agent.q
+
+
+def test_removed_shortcuts_leave_menu_and_ai_unchanged(monkeypatch):
+    from flappy_ai.__main__ import DEFAULT_MODEL
+
+    frames = []
+    panels = []
+    loads = []
+    real_load = QAgent.load
+
+    def load_checkpoint(path):
+        loads.append((path, len(frames)))
+        return real_load(path)
+
+    monkeypatch.setattr(QAgent, 'load', load_checkpoint)
+
+    class ObservedCanvas(ui.Canvas):
+        def scene(self, env, label=''):
+            frames.append((label, env.limited, env.g.target_score, env.g.max_steps))
+            super().scene(env, label)
+
+        def panel(self, lines):
+            panels.append(lines)
+            super().panel(lines)
+
+    batches = iter([[], [pygame.K_t, pygame.K_1, pygame.K_2], [pygame.K_a],
+                    [pygame.K_t, pygame.K_1, pygame.K_2], [pygame.K_ESCAPE, pygame.K_q]])
+    monkeypatch.setattr(ui, 'Canvas', ObservedCanvas)
+    monkeypatch.setattr(pygame.event, 'get', lambda: [
+        pygame.event.Event(pygame.KEYDOWN, key=key) for key in next(batches, [])])
+    ui.play(Config(), DEFAULT_MODEL)
+    assert frames[0] == frames[1] == ('MENU  |  1.00x', False, 100, 18000)
+    assert frames[2] == frames[3] == ('AI  |  1.00x', False, 100, 18000)
+    assert panels[0] == panels[1]
+    assert panels[0][1:5] == ['H — Human flight', 'A — Watch AI', 'C — Human vs AI', 'Q — Quit']
+    assert loads == [(DEFAULT_MODEL, 2)]
