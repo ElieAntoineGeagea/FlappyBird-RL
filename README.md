@@ -14,7 +14,7 @@ python -m venv .venv
 
 Activation is unnecessary, so PowerShell execution-policy changes are unnecessary. `pygame-ce` supplies the `pygame` module.
 
-Menu: **H** human, **A** trained AI, **C** comparison, **Q** quit. In flight: **Space** flap, **P** pause, **R** restart, **Esc** menu. **+ / -** adjusts simulation speed (0.25–8x). A comparison starts at 1x and reuses the exact seed and obstacle sequence; speed controls are locked during comparison for fair human reaction times. Press **Enter** after the human flight to start the AI. Completed comparisons export to `artifacts/comparison.csv` (one row per completed pair during the current application session).
+Menu: **H** human, **A** trained AI, **C** comparison, **Q** quit. In flight: **Space** flap, **P** pause, **R** restart, **Esc** menu. **+ / -** adjusts simulation speed (0.25–8x). A comparison starts at 1x and reuses the exact seed and obstacle sequence; speed controls are locked during comparison for fair human reaction times. Press **Enter** after the human flight to start the AI. Each completed comparison exports a separate timestamp-and-UUID CSV under `artifacts/comparisons/`; previous sessions are never overwritten. The terminal prints the exact filename. A failed save is reported in both the terminal and result screen.
 
 ## Training
 
@@ -27,7 +27,47 @@ Menu: **H** human, **A** trained AI, **C** comparison, **Q** quit. In flight: **
 .\.venv\Scripts\python.exe -m flappy_ai train --resume artifacts/agent.npz --episodes 5000
 ```
 
-Visual training: **P** pauses, **S** or **Esc** saves and stops, **+ / -** changes simulation steps between displayed frames. Headless training: **Ctrl+C** saves completed learning; restart with `--resume`. Console progress every 100 episodes includes episode, epsilon, score, reward, and rolling average. Checkpoints default to every 1,000 episodes. `agent.npz` is the latest policy. Each invocation writes a separate `training_FIRST_LAST.csv` and PNG, preserving earlier histories. A stopped partial episode's learned transitions are saved, but that episode is not counted in history and is replayed on resume. Duration measures active invocation wall time, including checkpointing and any visual pauses, excluding final plot generation.
+Every invocation creates a unique `artifacts/run_UTC-TIMESTAMP_UUID/` folder (or under `--output`). **The bundled `artifacts/agent.npz`, all 24 original checkpoints, and earlier results are never replaced by training.** AI play continues using that bundled agent unless you explicitly pass `play --model PATH_TO_NEW_RUN/agent.npz`.
+
+Each run contains:
+
+- `training.csv`: append-only episode statistics, flushed and fsynced after every completed episode.
+- `training.png`: three panels showing episode rewards and their rolling mean, scores and their rolling mean, and epsilon decay.
+- `latest.npz`: atomic recovery checkpoint, saved initially, every 60 wall seconds, on pause, and on manual request.
+- `checkpoint_EPISODE.npz`: periodic episode checkpoints (default every 1,000 episodes).
+- `agent.npz`: final snapshot after normal completion, cooperative stop, Ctrl+C, or a recoverable exception.
+- `config.json` and `status.json`: configuration and latest run status.
+
+Visual training: **P** pauses/resumes and saves a checkpoint on pause; **C** saves a checkpoint; **S**, **Esc**, or closing the training window saves and stops. **+ / -** changes simulation steps between displayed frames. A checkpoint confirmation appears in the window and terminal.
+
+Headless training in an interactive Windows terminal: **P** pauses/resumes, **C** checkpoints, **S** saves and stops (no Enter needed). **Ctrl+C** requests a cooperative stop; disk writes occur outside the signal handler. When stdin is redirected or keyboard polling is unavailable, control files work from another PowerShell window. Copy the exact run directory printed by training:
+
+```powershell
+$runPath = 'C:\Users\User\Documents\FlappyBird-RL\artifacts\run_REPLACE_WITH_ACTUAL_NAME'
+New-Item -ItemType File -Path (Join-Path $runPath 'PAUSE')
+# Resume after a file-based pause:
+Remove-Item -LiteralPath (Join-Path $runPath 'PAUSE')
+# Save a checkpoint without stopping (the application consumes this request file):
+New-Item -ItemType File -Path (Join-Path $runPath 'CHECKPOINT')
+# Save and stop, including while paused:
+New-Item -ItemType File -Path (Join-Path $runPath 'STOP')
+```
+
+Use `--checkpoint-seconds 15` to shorten automatic recovery intervals. Console progress every 100 episodes includes episode, epsilon, score, reward and rolling average. Rolling averages restart per run. `--resume` loads the exact checkpoint configuration and creates another unique run folder. A checkpoint taken partway through an episode preserves learned transitions but does not save live environment state: that episode's obstacle seed is replayed on resume, using the saved exploration RNG state. This is not an exact continuation of the partial episode. Duration measures wall time, including pauses and checkpointing, excluding final graph export.
+
+Abrupt Task Manager termination, console closure, power failure, or filesystem failure may bypass cleanup. Completed rows are durably flushed per episode, but the last in-progress CSV row can be incomplete if termination happens during its write. Q-values since the last completed checkpoint may be lost (normally up to the configured wall-time interval); CSV statistics can therefore extend beyond a recovery checkpoint. Atomic replacement keeps the preceding checkpoint valid if a replacement fails. No software can guarantee persistence when storage itself fails.
+
+Regenerate all three graph panels from existing statistics **without training**:
+
+```powershell
+.\.venv\Scripts\python.exe -m flappy_ai plot --csv artifacts/training_all.csv --output artifacts/plots
+```
+
+The command prints the unique PNG path. To open the existing verification graph from anywhere in Windows:
+
+```powershell
+Start-Process -FilePath "C:\Users\User\Documents\FlappyBird-RL\artifacts\verification\training_graphs.png"
+```
 
 ## Reproducible evaluation
 
@@ -37,11 +77,11 @@ Visual training: **P** pauses, **S** or **Esc** saves and stops, **+ / -** chang
 .\.venv\Scripts\python.exe -m pytest -q
 ```
 
-The default evaluation uses 20 fixed, held-out seeds 10000–10019. Exploration is disabled and the Q-table is not modified. Outputs: per-seed CSV, score bar chart, and summary JSON containing average, best, success rate, seeds and recorded training duration. **Success means reaching the configured target of 100 pipes**, not merely passing one pipe. Report seed count and target alongside success rate. Training scores include exploration; evaluate the greedy policy separately. Results depend on training budget and discretization. See `RESULTS.md` for measurements actually produced in this workspace.
+Each evaluation CLI invocation creates a unique evaluation subfolder under `--output` and prints its location, preserving previous results. The default evaluation uses 20 fixed, held-out seeds 100000-100019. Exploration is disabled and the Q-table is not modified. Outputs: per-seed CSV, score bar chart, and summary JSON containing average, best, success rate, seeds and recorded training duration. **Success means reaching the configured target of 100 pipes**, not merely passing one pipe. Report seed count and target alongside success rate. Training scores include exploration; evaluate the greedy policy separately. Results depend on training budget and discretization. See `RESULTS.md` for measurements actually produced in this workspace.
 
 ## Configuration
 
-Edit `configs/default.json`; pass `--config` to train or to human play without a loaded model. Fields cover world dimensions, gravity, flap impulse, pipe gap/spacing/speed, bird radius, finite episode steps, target score, reward values, alpha, gamma, exploration schedule, bins and training seed. Change game difficulty before training. A loaded model always uses its own saved configuration, keeping its discretization and game physics consistent. CLI `--episodes` overrides the episode count. Fixed seeds reproduce obstacle geometry independently of actions. Restart deliberately replays the same course; choose `play --seed 42` for another course.
+Edit `configs/default.json`; pass `--config` to train or to human play without a loaded model. Fields cover world dimensions, gravity, flap impulse, pipe gap/spacing/speed, bird radius, finite episode steps, target score, reward values, alpha, gamma, exploration schedule, bins and training seed. Change game difficulty before training. Validation rejects non-finite values, wrong types, invalid dimensions, non-positive pipe widths, impossible gaps/spacing, unsafe physics steps, invalid learning ranges and non-integer counts. Configuration changes that affect the environment require a new training experiment. A loaded model always uses its own saved configuration, keeping its discretization and game physics consistent. CLI `--episodes` overrides the episode count. Fixed seeds reproduce obstacle geometry independently of actions. Restart deliberately replays the same course; choose `play --seed 42` for another course.
 
 Observation order and normalization ranges:
 
@@ -62,8 +102,18 @@ Each value becomes a clamped integer bin: `floor((value-low)/(high-low)*bins)`. 
 - `flappy_ai/training.py`: training, checkpointing, fixed-seed evaluation, CSV and Matplotlib exports.
 - `flappy_ai/ui.py`: menus, animated bird, procedural scenery, pause/restart, comparison and training view.
 - `flappy_ai/config.py`: typed configuration and validation.
+- `flappy_ai/storage.py`: unique run folders, durable CSV journals, atomic status output and comparison exports.
+- `flappy_ai/controls.py`: cooperative signals, Windows terminal keys and control files.
 - `tests/test_core.py`: physics, collision boundaries, scoring, caps, updates, bins, greedy evaluation and serialization.
 
 Q-learning uses `Q(s,a) <- Q(s,a) + alpha * [r + gamma * max Q(s',.) - Q(s,a)]`. Collision and target termination remove the bootstrap term. Time limits are truncations and retain it. Exploration selects a uniformly random action with probability epsilon; otherwise the maximum Q value wins (ties choose no flap). Epsilon decays after each completed episode with a configured minimum. Environment and exploration random generators are separate; checkpoints preserve exploration generator state and resume episode seed numbering.
 
-No installation or launch confirmation remains necessary after the dependency approval given for this workspace. Running `play` opens a local window; saving outputs writes only to the chosen output folder. No external account or paid service is used.
+## Maintenance verification
+
+The original project was uploaded first to the private GitHub repository `ElieAntoineGeagea/FlappyBird-RL` in baseline commit `c1cfe8c`. `.preservation-manifest.json` records SHA-256 hashes of all 53 original artifact files. Regression tests verify every hash, load all preserved policy results, and reevaluate the saved agent without learning. The Bellman update, state discretization, action selection and epsilon schedule are unchanged. No additional training of the bundled agent was performed during maintenance; tests create disposable agents in temporary directories.
+
+Tests cover all seven project features through environment, serialization, evaluation and simulated Pygame events, plus invalid parameters, corrupted checkpoints, atomic replacement failures, incremental durability, graceful STOP-file shutdown and forced process termination. UI tests use SDL dummy video/audio; manual interaction and display timing are still hardware-dependent. Matplotlib/Pyparsing currently emits harmless third-party deprecation warnings.
+
+If an AI checkpoint is missing or corrupt, play mode explains the problem and keeps human mode available. CLI failures show a concise error and exit code 2. A graph export failure leaves saved training CSV/checkpoints available for the `plot` command. The learned policy remains imperfect and the recorded 100-pipe success rate remains zero; maintenance fixes do not imply improved learning results.
+
+No installation or launch confirmation remains necessary after the dependency approval given for this workspace. Running `play` opens a local window; saving outputs writes only to the chosen output folder. The game, training and evaluation run locally without paid services; GitHub hosts the project backup.

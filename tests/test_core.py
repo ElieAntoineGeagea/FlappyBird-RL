@@ -77,7 +77,7 @@ def test_evaluation_is_deterministic_and_does_not_learn(tmp_path):
 def test_short_training(tmp_path):
     a=QAgent(Config()); rows=train(a,3,tmp_path)
     assert len(rows)==3 and a.episodes==3 and len(a.q)>0
-    assert QAgent.load(tmp_path/'agent.npz').episodes==3
+    assert QAgent.load(next(tmp_path.glob('run_*/agent.npz'))).episodes==3
 
 
 def test_invalid_config():

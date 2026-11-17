@@ -4,7 +4,7 @@ from pathlib import Path
 import pygame
 from .environment import Environment
 from .agent import QAgent
-from .training import write_csv
+from .storage import save_comparison
 
 BG=(16,26,47); WHITE=(231,240,250); GOLD=(255,204,77); TEAL=(40,204,168)
 
@@ -52,18 +52,27 @@ class Canvas:
 
 class TrainingView(Canvas):
     def __init__(self,config):
-        super().__init__(config,'Q-Learning - training'); self.speed=1000; self.paused=False
-    def update(self,env,agent,total,recent):
+        super().__init__(config,'Q-Learning - training'); self.speed=1000; self.paused=False; self.notice=''
+    def update(self,env,agent,total,recent,on_checkpoint=None,should_stop=None,external_paused=False):
+        def checkpoint():
+            if on_checkpoint:
+                on_checkpoint()
+                self.notice='Checkpoint saved.'
+                print(self.notice, flush=True)
         while True:
+            if should_stop and should_stop(): return False
             for event in pygame.event.get():
                 if event.type==pygame.QUIT: return False
                 if event.type==pygame.KEYDOWN:
                     if event.key in (pygame.K_ESCAPE,pygame.K_s): return False
-                    if event.key==pygame.K_p: self.paused=not self.paused
+                    if event.key==pygame.K_p:
+                        self.paused=not self.paused
+                        if self.paused: checkpoint()
+                    if event.key==pygame.K_c: checkpoint()
                     if event.key in (pygame.K_EQUALS,pygame.K_KP_PLUS): self.speed=min(10000,self.speed*2)
                     if event.key in (pygame.K_MINUS,pygame.K_KP_MINUS): self.speed=max(1,self.speed//2)
             self.scene(env,'Q-LEARNING / TRAINING')
-            self.panel(['Paused' if self.paused else 'Training',f'Episode {agent.episodes+1}   score {env.score}',f'Epsilon {agent.epsilon:.4f}',f'Reward {total:.2f}',f'Rolling average {sum(recent)/max(1,len(recent)):.2f}',f'{self.speed} simulation steps / display','P pause   S save & stop','+ / - training speed'])
+            self.panel(['Paused' if self.paused or external_paused else 'Training',f'Episode {agent.episodes+1}   score {env.score}',f'Epsilon {agent.epsilon:.4f}',f'Reward {total:.2f}',f'Rolling average {sum(recent)/max(1,len(recent)):.2f}',f'{self.speed} simulation steps / display','P pause  C checkpoint  S stop','+ / - training speed',self.notice])
             pygame.display.flip(); self.clock.tick(60)
             if not self.paused: return True
 
@@ -71,10 +80,15 @@ class TrainingView(Canvas):
 def play(config, model='artifacts/agent.npz',seed=2026,speed=1.0):
     agent=None
     if Path(model).exists():
-        agent=QAgent.load(model); config=agent.config
+        try:
+            agent=QAgent.load(model); config=agent.config
+        except (OSError, ValueError) as error:
+            print(f'Cannot load AI model {model}: {error}. Human mode remains available.', flush=True)
+    if agent is None and not Path(model).exists():
+        print(f'AI model not found: {model}. Human mode is available; load a valid model for AI/comparison.', flush=True)
     view=Canvas(config); env=Environment(config); env.reset(seed)
     mode='menu'; paused=False; accumulator=0.0; running=True; comparison=False; pending_flap=False
-    human_score=None; result=[]; message=''
+    human_score=None; message='' if agent else 'AI unavailable: check model path.'; comparison_message=''
     while running:
         dt=min(view.clock.tick(60)/1000,.1)
         for event in pygame.event.get():
@@ -109,8 +123,14 @@ def play(config, model='artifacts/agent.npz',seed=2026,speed=1.0):
                 if comparison and mode=='human':
                     human_score=env.score; mode='compare_next'
                 elif comparison:
-                    result.append(dict(seed=seed,human_score=human_score,ai_score=env.score,speed=speed))
-                    Path('artifacts').mkdir(exist_ok=True); write_csv('artifacts/comparison.csv',result); mode='over'
+                    try:
+                        saved=save_comparison(dict(seed=seed,human_score=human_score,ai_score=env.score,speed=speed))
+                        comparison_message='Comparison saved (see terminal).'
+                        print(f'Comparison saved: {saved.resolve()}', flush=True)
+                    except OSError as error:
+                        comparison_message='Save failed (see terminal).'
+                        print(f'Could not save comparison: {error}', flush=True)
+                    mode='over'
                 else:
                     human_score=None if mode=='human' else -1; mode='over'
         view.scene(env,f'{mode.upper()}  |  {speed:.2f}x')
@@ -119,7 +139,7 @@ def play(config, model='artifacts/agent.npz',seed=2026,speed=1.0):
         elif mode=='compare_next': view.panel(['Your flight is complete',f'Human score: {human_score}','Enter: AI flies the same seed'])
         elif mode=='over':
             lines=['Flight complete',f'Score: {env.score}  ({env.reason})']
-            if comparison: lines += [f'Human {human_score} vs AI {env.score}','Saved: artifacts/comparison.csv']
+            if comparison: lines += [f'Human {human_score} vs AI {env.score}',comparison_message]
             lines += ['R restart | Esc menu']; view.panel(lines)
         else: view.text('Space flap  |  P pause  |  Esc menu',16,config.game.height-35,BG)
         pygame.display.flip()

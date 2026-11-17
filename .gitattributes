@@ -1,0 +1,2 @@
+# Preserve exact experiment bytes, including Windows CSV/JSON line endings.
+artifacts/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
