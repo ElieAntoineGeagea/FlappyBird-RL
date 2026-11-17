@@ -17,8 +17,8 @@ class GameConfig:
     pipe_width: float = 70
     pipe_gap: float = 175
     pipe_spacing: float = 240
-    max_steps: int = 18000
-    target_score: int = 100
+    max_steps: int = 100000
+    target_score: int = 1000
 
 @dataclass
 class RewardConfig:

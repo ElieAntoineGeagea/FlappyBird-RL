@@ -69,6 +69,8 @@ def check_preserved():
 
 def config_for(arm,seed):
     c=Config()
+    # Preserve this historical study's 100-pipe task despite new game defaults.
+    c.game.target_score=100; c.game.max_steps=18000
     c.training.seed=seed
     for key,value in CHANGES[arm].items():
         section=c.rewards if key in ('survive','pipe','death') else c.training

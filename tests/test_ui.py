@@ -92,3 +92,54 @@ def test_human_pause_speed_flap_and_comparison_lock(monkeypatch,tmp_path):
     assert frames[4][0]>frames[3][0]
     assert frames[5][0]<frames[4][0]  # Restart resets simulation steps.
     assert '1.00x' in frames[7][2] and '1.00x' in frames[8][2]
+
+
+def test_menu_selects_both_bundled_agents_and_short_target(monkeypatch,tmp_path):
+    c=Config();c.game.max_steps=4
+    frames=[]
+    class Clock:
+        def tick(self,*args):return 34
+    base=ui.Canvas
+    class Observed(base):
+        def __init__(self,*a,**kw):super().__init__(*a,**kw);self.clock=Clock()
+        def scene(self,env,label=''):
+            frames.append((label,env.g.target_score));super().scene(env,label)
+    monkeypatch.setattr(ui,'Canvas',Observed)
+    batches=iter([[pygame.K_1],[pygame.K_a],[pygame.K_ESCAPE],[pygame.K_2],[pygame.K_t],[pygame.K_a],[pygame.K_ESCAPE],[pygame.K_q]])
+    monkeypatch.setattr(pygame.event,'get',lambda:[pygame.event.Event(pygame.KEYDOWN,key=k) for k in next(batches,[pygame.K_q])])
+    ui.play(c)
+    assert any('AI | Original' in label and target==1000 for label,target in frames)
+    assert any('AI | Improved' in label and target==100 for label,target in frames)
+
+
+def test_victory_screen_from_999_score_mechanics_fixture(monkeypatch):
+    # This fixture verifies UI/termination, not a trained agent's real achievement.
+    from flappy_ai.environment import Pipe
+    c=Config();panels=[]
+    base_env=ui.Environment
+    class BoundaryEnvironment(base_env):
+        def reset(self,seed=0):
+            super().reset(seed);self.score=999
+            self.pipes[0]=Pipe(self.g.bird_x-self.g.pipe_width-self.g.bird_radius+1,self.y)
+            return self.observe()
+    class Clock:
+        def tick(self,*args):return 34
+    base=ui.Canvas
+    class Observed(base):
+        def __init__(self,*a,**kw):super().__init__(*a,**kw);self.clock=Clock()
+        def panel(self,lines):panels.append(lines);super().panel(lines)
+    monkeypatch.setattr(ui,'Environment',BoundaryEnvironment)
+    monkeypatch.setattr(ui,'Canvas',Observed)
+    batches=iter([[pygame.K_a],[pygame.K_ESCAPE],[pygame.K_q]])
+    monkeypatch.setattr(pygame.event,'get',lambda:[pygame.event.Event(pygame.KEYDOWN,key=k) for k in next(batches,[pygame.K_q])])
+    ui.play(c)
+    victories=[lines for lines in panels if lines[0]=='Victory!']
+    assert victories and '1,000 / 1,000' in victories[0][1]
+
+
+def test_score_1000_hud_fits_window():
+    c=Config();view=ui.Canvas(c);env=Environment(c);env.score=1000
+    try:
+        view.scene(env,'AI | Improved | 1.00x')
+        assert view.big.size('1,000 / 1,000')[0]<c.game.width-32
+    finally:view.close()

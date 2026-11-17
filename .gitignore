@@ -2,3 +2,7 @@
 __pycache__/
 .pytest_cache/
 *.tmp
+
+/latest_long_validation.txt
+/long_validation_console.log
+/validations/long_game_*/**/evaluation.png

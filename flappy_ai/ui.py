@@ -5,6 +5,7 @@ import pygame
 from .environment import Environment
 from .agent import QAgent
 from .storage import save_comparison
+from .runtime import episode_config, ORIGINAL_MODEL, IMPROVED_MODEL
 
 BG=(16,26,47); WHITE=(231,240,250); GOLD=(255,204,77); TEAL=(40,204,168)
 
@@ -42,12 +43,14 @@ class Canvas:
         pygame.draw.polygon(bird,(249,102,58),[(38,23),(51,27),(38,30)])
         bird=pygame.transform.rotate(bird,max(-60,min(25,-env.velocity*5)))
         s.blit(bird,bird.get_rect(center=(g.bird_x,env.y)))
-        self.text(label,18,14,BG); self.text(str(env.score),g.width//2-12,42,WHITE,True)
+        self.text(label,18,14,BG)
+        score=self.big.render(f'{env.score:,} / {g.target_score:,}',True,WHITE)
+        self.screen.blit(score,score.get_rect(midtop=(g.width//2,48)))
     def panel(self,lines):
         overlay=pygame.Surface(self.screen.get_size(),pygame.SRCALPHA); overlay.fill((10,20,40,215)); self.screen.blit(overlay,(0,0))
-        y=120
+        y=85 if len(lines)>10 else 120
         for i,line in enumerate(lines):
-            self.text(line,28,y,GOLD if i==0 else WHITE,i==0); y+=52 if i==0 else 36
+            self.text(line,28,y,GOLD if i==0 else WHITE,i==0); y+=48 if i==0 else (30 if len(lines)>10 else 36)
     def close(self): pygame.quit()
 
 class TrainingView(Canvas):
@@ -77,70 +80,175 @@ class TrainingView(Canvas):
             if not self.paused: return True
 
 
-def play(config, model='artifacts/agent.npz',seed=2026,speed=1.0):
-    agent=None
-    if Path(model).exists():
+
+class Milestones:
+    thresholds = (100, 250, 500, 750, 1000)
+
+    def __init__(self):
+        self.previous = 0
+        self.current = None
+        self.until = 0
+
+    def update(self, score, now_ms):
+        crossed = [value for value in self.thresholds if self.previous < value <= score]
+        if crossed:
+            self.current = crossed[-1]
+            self.until = now_ms + 2200
+        self.previous = score
+        return self.current if now_ms < self.until else None
+
+
+def play(config, model=None, seed=2026, speed=1.0, selected='improved', *, max_steps=None):
+    """Frozen policies share runtime target/step limits; checkpoint bytes stay untouched."""
+    paths = {'Original': ORIGINAL_MODEL, 'Improved': IMPROVED_MODEL}
+    if model is not None:
+        paths['Custom'] = Path(model)
+    agents = {}
+    for name, path in paths.items():
         try:
-            agent=QAgent.load(model); config=agent.config
+            agents[name] = QAgent.load(path)
         except (OSError, ValueError) as error:
-            print(f'Cannot load AI model {model}: {error}. Human mode remains available.', flush=True)
-    if agent is None and not Path(model).exists():
-        print(f'AI model not found: {model}. Human mode is available; load a valid model for AI/comparison.', flush=True)
-    view=Canvas(config); env=Environment(config); env.reset(seed)
-    mode='menu'; paused=False; accumulator=0.0; running=True; comparison=False; pending_flap=False
-    human_score=None; message='' if agent else 'AI unavailable: check model path.'; comparison_message=''
-    while running:
-        dt=min(view.clock.tick(60)/1000,.1)
-        for event in pygame.event.get():
-            if event.type==pygame.QUIT: running=False
-            if event.type!=pygame.KEYDOWN: continue
-            k=event.key
-            if k==pygame.K_ESCAPE:
-                mode='menu'; paused=False; comparison=False
-            if not comparison and k in (pygame.K_EQUALS,pygame.K_KP_PLUS): speed=min(8,speed+.25)
-            if not comparison and k in (pygame.K_MINUS,pygame.K_KP_MINUS): speed=max(.25,speed-.25)
-            if mode=='menu':
-                if k in (pygame.K_h,pygame.K_a,pygame.K_c):
-                    if k!=pygame.K_h and agent is None: message='Train an agent first (see README).'; continue
-                    comparison=k==pygame.K_c; mode='human' if k!=pygame.K_a else 'ai'
-                    env.reset(seed); accumulator=0; pending_flap=False; human_score=None; message=''
-                    if comparison: speed=1.0
-                if k==pygame.K_q: running=False
-            elif mode in ('human','ai'):
-                if k==pygame.K_SPACE and mode=='human': pending_flap=True
-                if k==pygame.K_p: paused=not paused; accumulator=0
-                if k==pygame.K_r: env.reset(seed); accumulator=0; pending_flap=False
-            elif mode=='over' and k==pygame.K_r:
-                mode='human' if comparison or human_score is None else 'ai'; env.reset(seed); accumulator=0; pending_flap=False
-            elif mode=='compare_next' and k==pygame.K_RETURN:
-                mode='ai'; env.reset(seed); accumulator=0; pending_flap=False
-        if mode in ('human','ai') and not paused:
-            accumulator+=dt*speed
-            while accumulator>=1/60 and not env.done:
-                action=agent.act(env.observe(),False) if mode=='ai' else int(pending_flap)
-                pending_flap=False; env.step(action); accumulator-=1/60
-            if env.done:
-                if comparison and mode=='human':
-                    human_score=env.score; mode='compare_next'
-                elif comparison:
-                    try:
-                        saved=save_comparison(dict(seed=seed,human_score=human_score,ai_score=env.score,speed=speed))
-                        comparison_message='Comparison saved (see terminal).'
-                        print(f'Comparison saved: {saved.resolve()}', flush=True)
-                    except OSError as error:
-                        comparison_message='Save failed (see terminal).'
-                        print(f'Could not save comparison: {error}', flush=True)
-                    mode='over'
-                else:
-                    human_score=None if mode=='human' else -1; mode='over'
-        view.scene(env,f'{mode.upper()}  |  {speed:.2f}x')
-        if mode=='menu': view.panel(['Flappy Bird AI','REINFORCEMENT LEARNING','H   Human flight','A   Trained AI','C   Human vs AI (same seed)','Q   Quit',message or 'Space flap | P pause | R restart','+ / - speed | Esc menu'])
-        elif paused: view.panel(['Paused','P resume | Esc menu'])
-        elif mode=='compare_next': view.panel(['Your flight is complete',f'Human score: {human_score}','Enter: AI flies the same seed'])
-        elif mode=='over':
-            lines=['Flight complete',f'Score: {env.score}  ({env.reason})']
-            if comparison: lines += [f'Human {human_score} vs AI {env.score}',comparison_message]
-            lines += ['R restart | Esc menu']; view.panel(lines)
-        else: view.text('Space flap  |  P pause  |  Esc menu',16,config.game.height-35,BG)
-        pygame.display.flip()
-    view.close()
+            agents[name] = None
+            print(f'Cannot load {name} AI model {path}: {error}. Human mode remains available.', flush=True)
+    choice = 'Custom' if model is not None else selected.capitalize()
+    target = config.game.target_score
+    def session():
+        source = agents[choice].config if agents[choice] else config
+        step_cap = max_steps
+        if step_cap is None and target == config.game.target_score:
+            step_cap = config.game.max_steps
+        return episode_config(source, target, step_cap)
+
+    current = session()
+    view = Canvas(current)
+    env = Environment(current)
+    env.reset(seed)
+    mode = 'menu'
+    paused = False
+    accumulator = 0.0
+    running = True
+    comparison = False
+    pending_flap = False
+    human_score = None
+    message = ''
+    comparison_message = ''
+    last_mode = 'human'
+    milestones = Milestones()
+
+    def reset_flight():
+        nonlocal accumulator, pending_flap, paused, milestones
+        env.reset(seed)
+        accumulator = 0.0
+        pending_flap = False
+        paused = False
+        milestones = Milestones()
+
+    def change_session():
+        nonlocal env
+        new_config = session()
+        if view.screen.get_size() != (new_config.game.width, new_config.game.height):
+            view.screen = pygame.display.set_mode((new_config.game.width, new_config.game.height))
+        view.config = new_config
+        env = Environment(new_config)
+        reset_flight()
+
+    try:
+        while running:
+            dt = min(view.clock.tick(60)/1000, .1)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                if event.type != pygame.KEYDOWN:
+                    continue
+                key = event.key
+                if key == pygame.K_ESCAPE:
+                    mode = 'menu'; paused = False; comparison = False
+                if not comparison and key in (pygame.K_EQUALS, pygame.K_KP_PLUS):
+                    speed = min(8, speed+.25)
+                if not comparison and key in (pygame.K_MINUS, pygame.K_KP_MINUS):
+                    speed = max(.25, speed-.25)
+                if mode == 'menu':
+                    if key in (pygame.K_1, pygame.K_2):
+                        choice = 'Original' if key == pygame.K_1 else 'Improved'
+                        change_session(); message = ''
+                    if key == pygame.K_t:
+                        target = 100 if target != 100 else 1000
+                        change_session()
+                    if key in (pygame.K_h, pygame.K_a, pygame.K_c):
+                        if key != pygame.K_h and agents[choice] is None:
+                            message = 'Selected AI unavailable; choose 1 or 2.'
+                            continue
+                        comparison = key == pygame.K_c
+                        mode = 'human' if key != pygame.K_a else 'ai'
+                        reset_flight(); human_score = None; message = ''
+                        if comparison:
+                            speed = 1.0
+                    if key == pygame.K_q:
+                        running = False
+                elif mode in ('human', 'ai'):
+                    if key == pygame.K_SPACE and mode == 'human':
+                        pending_flap = True
+                    if key == pygame.K_p:
+                        paused = not paused; accumulator = 0
+                    if key == pygame.K_r:
+                        reset_flight()
+                elif mode in ('over', 'victory') and key == pygame.K_r:
+                    mode = 'human' if comparison else last_mode
+                    reset_flight()
+                elif mode == 'compare_next' and key == pygame.K_RETURN:
+                    mode = 'ai'
+                    reset_flight()
+            if mode in ('human', 'ai') and not paused:
+                accumulator += dt*speed
+                while accumulator >= 1/60 and not env.done:
+                    action = agents[choice].act(env.observe(), False) if mode == 'ai' else int(pending_flap)
+                    pending_flap = False
+                    env.step(action)
+                    accumulator -= 1/60
+                if env.done:
+                    last_mode = mode
+                    if comparison and mode == 'human':
+                        human_score = env.score
+                        mode = 'compare_next'
+                    else:
+                        if comparison:
+                            try:
+                                saved = save_comparison(dict(seed=seed, agent=choice, target=target,
+                                    human_score=human_score, ai_score=env.score, ai_reason=env.reason, speed=speed))
+                                comparison_message = 'Comparison saved (see terminal).'
+                                print(f'Comparison saved: {saved.resolve()}', flush=True)
+                            except OSError as error:
+                                comparison_message = 'Save failed (see terminal).'
+                                print(f'Could not save comparison: {error}', flush=True)
+                        mode = 'victory' if env.reason == 'target' else 'over'
+            view.scene(env, f'{mode.upper()} | {choice} | {speed:.2f}x')
+            milestone = milestones.update(env.score, pygame.time.get_ticks())
+            if milestone is not None and mode in ('human','ai','victory'):
+                text = view.font.render(f'Milestone: {milestone:,} pipes!', True, GOLD)
+                rect = text.get_rect(center=(env.g.width//2, 112))
+                pygame.draw.rect(view.screen, BG, rect.inflate(24,12), border_radius=8)
+                view.screen.blit(text,rect)
+            if mode == 'menu':
+                view.panel(['Flappy Bird AI',f'Agent: {choice} | Target: {target:,}',
+                    '1   Original Q-Learning agent','2   Improved Q-Learning agent',
+                    'H   Human flight','A   Watch selected AI','C   Human vs selected AI',
+                    'T   Toggle 100 / 1,000 target','Q   Quit',
+                    message or 'Space flap | P pause | R restart','+ / - speed | Esc menu'])
+            elif paused:
+                view.panel(['Paused',f'{choice} | {env.score:,} / {target:,}','P resume | R restart | Esc menu'])
+            elif mode == 'compare_next':
+                view.panel(['Your flight is complete',f'Human: {human_score:,} / {target:,}',
+                            f'End: {env.reason}','Enter: AI flies the same seed'])
+            elif mode in ('over','victory'):
+                title = 'Victory!' if mode == 'victory' else ('Time limit reached' if env.reason == 'time_limit' else 'Flight complete')
+                lines = [title, f'{choice} | {env.score:,} / {target:,}',
+                         'Target reached!' if mode == 'victory' else f'End: {env.reason}']
+                if comparison:
+                    lines += [f'Human {human_score:,} vs AI {env.score:,}', comparison_message]
+                lines += ['R restart | Esc menu']
+                view.panel(lines)
+            else:
+                view.text('Space flap | P pause | Esc menu',16,env.g.height-35,BG)
+            pygame.display.flip()
+    finally:
+        view.close()

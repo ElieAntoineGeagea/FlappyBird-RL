@@ -59,8 +59,7 @@ class Environment:
         self.velocity = min(g.max_velocity, self.velocity + g.gravity)
         self.y += self.velocity
         self.steps += 1
-        for p in self.pipes:
-            p.x -= g.pipe_speed
+        self.advance_pipes()
         reward = r.survive
         if self.collides():
             self.done, self.reason = True, 'collision'
@@ -74,7 +73,15 @@ class Environment:
             if self.score >= g.target_score or self.steps >= g.max_steps:
                 self.done = True
                 self.reason = 'target' if self.score >= g.target_score else 'time_limit'
-        while self.pipes[0].x + g.pipe_width < 0:
-            self.pipes.pop(0)
-            self.pipes.append(self.new_pipe(self.pipes[-1].x + g.pipe_spacing))
+        self.recycle_pipes()
         return self.observe(), reward, self.done, {'score': self.score, 'reason': self.reason}
+
+    def advance_pipes(self):
+        for pipe in self.pipes:
+            pipe.x -= self.g.pipe_speed
+
+    def recycle_pipes(self):
+        # Constant storage: exactly three live obstacles, even for long flights.
+        while self.pipes[0].x + self.g.pipe_width < 0:
+            self.pipes.pop(0)
+            self.pipes.append(self.new_pipe(self.pipes[-1].x + self.g.pipe_spacing))

@@ -14,7 +14,27 @@ python -m venv .venv
 
 Activation is unnecessary, so PowerShell execution-policy changes are unnecessary. `pygame-ce` supplies the `pygame` module.
 
-Menu: **H** human, **A** trained AI, **C** comparison, **Q** quit. In flight: **Space** flap, **P** pause, **R** restart, **Esc** menu. **+ / -** adjusts simulation speed (0.25–8x). A comparison starts at 1x and reuses the exact seed and obstacle sequence; speed controls are locked during comparison for fair human reaction times. Press **Enter** after the human flight to start the AI. Each completed comparison exports a separate timestamp-and-UUID CSV under `artifacts/comparisons/`; previous sessions are never overwritten. The terminal prints the exact filename. A failed save is reported in both the terminal and result screen.
+The game defaults to 1,000 pipes. Scoring milestones appear at 100, 250, 500, 750 and 1,000. Passing the target pipe ends the flight in victory. Collisions and time limits end the flight separately.
+
+In the menu, **1** selects the original agent and **2** selects the improved agent (the default). **T** switches between 100 and 1,000 pipes. **H** starts a human flight, **A** watches the selected agent, **C** starts a comparison, and **Q** quits. To choose an agent and target at launch, run one of these commands:
+
+```powershell
+.\.venv\Scripts\python.exe -m flappy_ai play --target 1000 --agent original
+.\.venv\Scripts\python.exe -m flappy_ai play --target 1000 --agent improved
+```
+
+In flight: **Space** flap, **P** pause, **R** restart, **Esc** menu. **+ / -** adjusts simulation speed (0.25–8x). A comparison starts at 1x and reuses the exact seed and obstacle sequence; speed controls are locked during comparison for fair human reaction times. Press **Enter** after the human flight to start the AI. Each completed comparison exports a separate timestamp-and-UUID CSV under `artifacts/comparisons/`; previous sessions are never overwritten. The terminal prints the exact filename. A failed save is reported in both the terminal and result screen.
+
+## Recorded agent performance
+
+In the saved [long-game validation](validations/long_game_20261117T151230_923685Z_609359fb/comparison.csv), each frozen policy flew the same 440 seeded courses at each target.
+
+| Saved policy | Average at 1,000 target | Best at 1,000 target | 1,000-pipe wins | 100-pipe wins |
+| --- | ---: | ---: | ---: | ---: |
+| Original | 19.1 | 157 | 0/440 | 2/440 |
+| Improved | 76.4 | 499 | 0/440 | 122/440 |
+
+The automated gameplay suite reaches 1,000 on a controlled course. The evaluation results above are the performance of the trained policies. The validation folder includes seed cohorts, hashes, and per-flight CSVs. Run `python verify_long_games.py` to reproduce the evaluation with the saved policies.
 
 ## Training
 
@@ -27,7 +47,7 @@ Menu: **H** human, **A** trained AI, **C** comparison, **Q** quit. In flight: **
 .\.venv\Scripts\python.exe -m flappy_ai train --resume artifacts/agent.npz --episodes 5000
 ```
 
-Every invocation creates a unique `artifacts/run_UTC-TIMESTAMP_UUID/` folder (or under `--output`). **The bundled `artifacts/agent.npz`, all 24 original checkpoints, and earlier results are never replaced by training.** AI play continues using that bundled agent unless you explicitly pass `play --model PATH_TO_NEW_RUN/agent.npz`.
+Every invocation creates a unique `artifacts/run_UTC-TIMESTAMP_UUID/` folder (or under `--output`). **The bundled `artifacts/agent.npz`, all 24 original checkpoints, and earlier results are never replaced by training.** To play a new checkpoint, pass `play --model PATH_TO_NEW_RUN/agent.npz`.
 
 Each run contains:
 

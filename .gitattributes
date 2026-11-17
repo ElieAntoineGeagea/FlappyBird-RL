@@ -3,3 +3,6 @@ artifacts/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-e
 
 # Keep experimental scientific evidence byte-exact.
 experiments/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Keep recorded validation data byte-exact.
+validations/** -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

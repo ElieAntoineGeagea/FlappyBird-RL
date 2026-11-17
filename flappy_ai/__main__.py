@@ -11,10 +11,13 @@ def main():
     parser = argparse.ArgumentParser(description='Flappy Bird AI - tabular Q-Learning')
     sub = parser.add_subparsers(dest='command', required=True)
     p = sub.add_parser('play')
-    p.add_argument('--model', default='artifacts/agent.npz')
+    p.add_argument('--model', help='Optional custom policy; menu also offers both bundled agents')
     p.add_argument('--config')
     p.add_argument('--seed', type=int, default=2026)
     p.add_argument('--speed', type=float, default=1)
+    p.add_argument('--agent', choices=['original','improved'], default='improved')
+    p.add_argument('--target', type=int, help='Runtime target (default 1000, or config target)')
+    p.add_argument('--max-steps', type=int, help='Optional explicit simulation-step cap')
     p = sub.add_parser('train')
     p.add_argument('--config')
     p.add_argument('--resume')
@@ -24,9 +27,12 @@ def main():
     p.add_argument('--checkpoint-seconds', type=float, default=60,
                    help='Maximum wall seconds between automatic latest checkpoints')
     p = sub.add_parser('evaluate')
-    p.add_argument('--model', default='artifacts/agent.npz')
+    p.add_argument('--model', help='Optional explicit checkpoint')
+    p.add_argument('--agent', choices=['original','improved'], default='improved')
     p.add_argument('--seeds', type=int, nargs='+', default=list(range(100000, 100020)))
     p.add_argument('--output', default='artifacts/evaluation')
+    p.add_argument('--target', type=int, default=1000, help='Use 100 to reproduce short historical evaluations')
+    p.add_argument('--max-steps', type=int, help='Default automatically allows reaching the requested target')
     p = sub.add_parser('plot', help='Regenerate reward, score and epsilon graphs from an existing CSV')
     p.add_argument('--csv', required=True)
     p.add_argument('--output', default='artifacts/plots')
@@ -36,7 +42,9 @@ def main():
             from .ui import play
             if not 0.25 <= args.speed <= 8:
                 raise ValueError('Speed must be between 0.25 and 8')
-            play(Config.load(args.config), args.model, args.seed, args.speed)
+            from .runtime import episode_config
+            config=episode_config(Config.load(args.config), args.target, args.max_steps)
+            play(config, args.model, args.seed, args.speed, selected=args.agent, max_steps=args.max_steps)
         elif args.command == 'train':
             if args.resume and args.config:
                 raise ValueError('Resume uses checkpoint configuration; omit --config')
@@ -44,9 +52,10 @@ def main():
             count = args.episodes if args.episodes is not None else agent.config.training.episodes
             train(agent, count, args.output, args.render, checkpoint_seconds=args.checkpoint_seconds)
         elif args.command == 'evaluate':
-            agent = QAgent.load(args.model)
+            from .runtime import ORIGINAL_MODEL, IMPROVED_MODEL
+            agent = QAgent.load(args.model or (ORIGINAL_MODEL if args.agent=='original' else IMPROVED_MODEL))
             output = unique_directory(args.output, 'evaluation')
-            print(json.dumps(evaluate(agent, args.seeds, output), indent=2))
+            print(json.dumps(evaluate(agent, args.seeds, output, args.target, args.max_steps), indent=2))
             print(f'Evaluation saved: {output.resolve()}')
         else:
             import csv

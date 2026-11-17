@@ -12,8 +12,8 @@
     "pipe_width": 70,
     "pipe_gap": 175,
     "pipe_spacing": 240,
-    "max_steps": 18000,
-    "target_score": 100
+    "max_steps": 100000,
+    "target_score": 1000
   },
   "rewards": {
     "survive": 0.05,

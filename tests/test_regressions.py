@@ -212,7 +212,11 @@ def test_original_artifacts_and_policy_preserved(tmp_path):
     before={s:v.copy() for s,v in agent.q.items()}
     for folder,seeds in [('evaluation',range(100000,100020)),('evaluation_fresh',range(200000,200020))]:
         result=training.evaluate(agent,seeds,tmp_path/folder)
-        assert result==json.loads((ROOT/'artifacts'/folder/'evaluation_summary.json').read_text())
+        expected=json.loads((ROOT/'artifacts'/folder/'evaluation_summary.json').read_text())
+        assert all(result[key]==value for key,value in expected.items())
+        with (ROOT/'artifacts'/folder/'evaluation.csv').open() as f: old_rows=list(csv.DictReader(f))
+        with (tmp_path/folder/'evaluation.csv').open() as f: new_rows=list(csv.DictReader(f))
+        assert new_rows==old_rows
     assert all(np.array_equal(value,agent.q[state]) for state,value in before.items())
 
 

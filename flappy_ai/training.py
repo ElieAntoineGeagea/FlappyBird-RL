@@ -30,8 +30,12 @@ def plot_rows(rows, path, evaluation=False):
     try:
         ax = axes[0, 0]
         if evaluation:
-            ax.bar([str(r['seed']) for r in rows], [r['score'] for r in rows])
-            ax.set_xlabel('Fixed evaluation seed')
+            positions=list(range(len(rows)))
+            ax.bar(positions, [r['score'] for r in rows])
+            tick_step=max(1,len(rows)//10)
+            ticks=positions[::tick_step]
+            ax.set_xticks(ticks,[str(rows[i]['seed']) for i in ticks],rotation=30,ha='right')
+            ax.set_xlabel('Fixed evaluation seed (ordered courses)')
             ax.set_ylabel('Pipes passed')
         else:
             x = [r['episode'] for r in rows]
@@ -203,7 +207,7 @@ def train(agent, episodes, output, render=False, control=None, checkpoint_second
     return rows
 
 
-def evaluate(agent, seeds, output):
+def evaluate(agent, seeds, output, target_score=None, max_steps=None):
     seeds = list(seeds)
     if not seeds or any(type(seed) is not int for seed in seeds):
         raise ValueError('At least one integer evaluation seed is required')
@@ -211,7 +215,10 @@ def evaluate(agent, seeds, output):
     output.mkdir(parents=True, exist_ok=True)
     if any((output / name).exists() for name in ('evaluation.csv', 'evaluation_summary.json', 'evaluation.png')):
         raise FileExistsError(f'Evaluation results already exist in {output}; choose a new output directory')
-    env = Environment(agent.config)
+    from .runtime import episode_config
+    import statistics
+    runtime = episode_config(agent.config, target_score, max_steps)
+    env = Environment(runtime)
     rows = []
     for seed in seeds:
         obs = env.reset(seed)
@@ -224,8 +231,14 @@ def evaluate(agent, seeds, output):
     summary = dict(episodes=len(rows), average_score=sum(r['score'] for r in rows) / len(rows),
                    best_score=max(r['score'] for r in rows),
                    success_rate=sum(r['success'] for r in rows) / len(rows),
-                   success_definition=f'Reach {agent.config.game.target_score} pipes',
+                   success_definition=f'Reach {runtime.game.target_score} pipes',
                    training_duration_seconds=agent.duration, seeds=seeds, exploration=False)
+    summary.update(median_score=statistics.median(r['score'] for r in rows),
+                   target_score=runtime.game.target_score, max_steps=runtime.game.max_steps,
+                   collisions=sum(r['reason']=='collision' for r in rows),
+                   victories=sum(r['reason']=='target' for r in rows),
+                   time_limits=sum(r['reason']=='time_limit' for r in rows),
+                   q_states=len(agent.q))
     write_csv(output / 'evaluation.csv', rows)
     atomic_json(output / 'evaluation_summary.json', summary)
     plot_rows(rows, output / 'evaluation.png', True)
