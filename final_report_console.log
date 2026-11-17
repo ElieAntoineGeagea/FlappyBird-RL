@@ -1,0 +1,9 @@
+{
+  "experimental_episodes": 260000,
+  "experimental_training_seconds": 3211.6177252999623,
+  "study_elapsed_seconds": 4262.959271192551,
+  "recommended_key": "rewards_s424242",
+  "original_artifact_files_preserved": 58
+}
+PAIRED TEST {"mean_delta": 37.35, "mean_delta_ci": [31.92, 42.840125], "median_delta": 44.0, "median_delta_ci": [30.5, 53.0], "p10_delta": 5.0, "p10_delta_ci": [2.900000000000002, 8.117499999999744], "win_fraction": 0.79, "tie_fraction": 0.05}
+RECOMMENDED TEST {"mean": 56.615, "median": 56.0, "p10": 7.0, "best": 100, "success": 0.275, "states": 7955}

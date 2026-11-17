@@ -1,0 +1,40 @@
+{
+  "game": {
+    "width": 480,
+    "height": 640,
+    "ground": 590,
+    "bird_x": 115,
+    "bird_radius": 13,
+    "gravity": 0.42,
+    "flap_velocity": -6.5,
+    "max_velocity": 10,
+    "pipe_speed": 3,
+    "pipe_width": 70,
+    "pipe_gap": 175,
+    "pipe_spacing": 240,
+    "max_steps": 18000,
+    "target_score": 100
+  },
+  "rewards": {
+    "survive": 0.05,
+    "pipe": 10,
+    "death": -10
+  },
+  "training": {
+    "alpha": 0.18,
+    "gamma": 0.995,
+    "epsilon_start": 1,
+    "epsilon_min": 0.01,
+    "epsilon_decay": 0.9995,
+    "bins": [
+      8,
+      12,
+      12,
+      24,
+      24
+    ],
+    "episodes": 12000,
+    "checkpoint_every": 1000,
+    "seed": 42
+  }
+}

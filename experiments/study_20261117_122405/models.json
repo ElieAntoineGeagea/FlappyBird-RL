@@ -1,0 +1,295 @@
+{
+  "control_s42": {
+    "arm": "control",
+    "training_seed": 42,
+    "episodes": 10000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_42\\run_20261117T123540_246662Z_e09cdc04\\agent.npz",
+    "duration": 56.80059569995501,
+    "states": 7022,
+    "epsilon": 0.01,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_42\\run_20261117T122535_293609Z_0802e9b3",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_42\\run_20261117T122632_502766Z_6f460ace",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_42\\run_20261117T122931_698705Z_448bd222",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_42\\run_20261117T123540_246662Z_e09cdc04"
+    ],
+    "last100_mean": 1.65
+  },
+  "intermediate_s42": {
+    "arm": "intermediate",
+    "training_seed": 42,
+    "episodes": 10000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\intermediate\\seed_42\\run_20261117T123615_860095Z_e50b4f77\\agent.npz",
+    "duration": 44.639197199983755,
+    "states": 12292,
+    "epsilon": 0.01,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\intermediate\\seed_42\\run_20261117T122635_799809Z_c9c8efef",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\intermediate\\seed_42\\run_20261117T122942_350341Z_954898de",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\intermediate\\seed_42\\run_20261117T123615_860095Z_e50b4f77"
+    ],
+    "last100_mean": 1.02
+  },
+  "fine_s42": {
+    "arm": "fine",
+    "training_seed": 42,
+    "episodes": 6000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\fine\\seed_42\\run_20261117T122954_623176Z_500929e5\\agent.npz",
+    "duration": 17.844668800011277,
+    "states": 12330,
+    "epsilon": 0.04974972962361759,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\fine\\seed_42\\run_20261117T122645_771173Z_e6f1bf37",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\fine\\seed_42\\run_20261117T122954_623176Z_500929e5"
+    ],
+    "last100_mean": 0.04
+  },
+  "gamma_s42": {
+    "arm": "gamma",
+    "training_seed": 42,
+    "episodes": 10000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\gamma\\seed_42\\run_20261117T123643_563782Z_fdf35584\\agent.npz",
+    "duration": 50.06271130000823,
+    "states": 7118,
+    "epsilon": 0.01,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\gamma\\seed_42\\run_20261117T122654_723594Z_ca5b93c8",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\gamma\\seed_42\\run_20261117T123006_408208Z_22e69720",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\gamma\\seed_42\\run_20261117T123643_563782Z_fdf35584"
+    ],
+    "last100_mean": 2.8
+  },
+  "alpha_s42": {
+    "arm": "alpha",
+    "training_seed": 42,
+    "episodes": 6000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\alpha\\seed_42\\run_20261117T123018_545752Z_3230aedc\\agent.npz",
+    "duration": 20.658168600028148,
+    "states": 4284,
+    "epsilon": 0.04974972962361759,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\alpha\\seed_42\\run_20261117T122703_893746Z_8aa63bd2",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\alpha\\seed_42\\run_20261117T123018_545752Z_3230aedc"
+    ],
+    "last100_mean": 0.18
+  },
+  "epsilon_s42": {
+    "arm": "epsilon",
+    "training_seed": 42,
+    "episodes": 10000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\epsilon\\seed_42\\run_20261117T123718_665212Z_3a97465d\\agent.npz",
+    "duration": 54.24221799999941,
+    "states": 7037,
+    "epsilon": 0.01492939942424147,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\epsilon\\seed_42\\run_20261117T122714_978503Z_845de7e8",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\epsilon\\seed_42\\run_20261117T123030_594923Z_04eab2cf",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\epsilon\\seed_42\\run_20261117T123718_665212Z_3a97465d"
+    ],
+    "last100_mean": 1.8
+  },
+  "rewards_s42": {
+    "arm": "rewards",
+    "training_seed": 42,
+    "episodes": 24000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_42\\run_20261117T125048_085843Z_93ffab51\\agent.npz",
+    "duration": 489.8687990999897,
+    "states": 8178,
+    "epsilon": 0.01,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_42\\run_20261117T122724_467632Z_97a29fb9",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_42\\run_20261117T123048_019240Z_4065da2e",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_42\\run_20261117T123752_512967Z_2842481f",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_42\\run_20261117T125048_085843Z_93ffab51"
+    ],
+    "last100_mean": 6.21
+  },
+  "combined_s42": {
+    "arm": "combined",
+    "training_seed": 42,
+    "episodes": 6000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\combined\\seed_42\\run_20261117T123058_387639Z_6e3cf15f\\agent.npz",
+    "duration": 16.87931699998444,
+    "states": 17220,
+    "epsilon": 0.0495762763861988,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\combined\\seed_42\\run_20261117T122732_548646Z_ed8102b2",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\combined\\seed_42\\run_20261117T123058_387639Z_6e3cf15f"
+    ],
+    "last100_mean": 0.09
+  },
+  "control_s424242": {
+    "arm": "control",
+    "training_seed": 424242,
+    "episodes": 10000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_424242\\run_20261117T123855_157141Z_0ad08019\\agent.npz",
+    "duration": 51.78908559997217,
+    "states": 6994,
+    "epsilon": 0.01,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_424242\\run_20261117T122743_119990Z_07030250",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_424242\\run_20261117T123108_025850Z_d3a47586",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_424242\\run_20261117T123855_157141Z_0ad08019"
+    ],
+    "last100_mean": 2.03
+  },
+  "intermediate_s424242": {
+    "arm": "intermediate",
+    "training_seed": 424242,
+    "episodes": 10000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\intermediate\\seed_424242\\run_20261117T123930_569115Z_39258d24\\agent.npz",
+    "duration": 46.111603300028946,
+    "states": 12248,
+    "epsilon": 0.01,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\intermediate\\seed_424242\\run_20261117T122752_741625Z_c1e606c3",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\intermediate\\seed_424242\\run_20261117T123120_578109Z_a8950d24",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\intermediate\\seed_424242\\run_20261117T123930_569115Z_39258d24"
+    ],
+    "last100_mean": 1.24
+  },
+  "fine_s424242": {
+    "arm": "fine",
+    "training_seed": 424242,
+    "episodes": 6000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\fine\\seed_424242\\run_20261117T123132_366627Z_99f7ae03\\agent.npz",
+    "duration": 17.781794200011063,
+    "states": 12970,
+    "epsilon": 0.04974972962361759,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\fine\\seed_424242\\run_20261117T122806_374883Z_9a753724",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\fine\\seed_424242\\run_20261117T123132_366627Z_99f7ae03"
+    ],
+    "last100_mean": 0.1
+  },
+  "gamma_s424242": {
+    "arm": "gamma",
+    "training_seed": 424242,
+    "episodes": 10000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\gamma\\seed_424242\\run_20261117T123956_308830Z_627a1902\\agent.npz",
+    "duration": 54.16095349995885,
+    "states": 7162,
+    "epsilon": 0.01,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\gamma\\seed_424242\\run_20261117T122814_286480Z_95f56e05",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\gamma\\seed_424242\\run_20261117T123144_857197Z_5964939b",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\gamma\\seed_424242\\run_20261117T123956_308830Z_627a1902"
+    ],
+    "last100_mean": 2.09
+  },
+  "alpha_s424242": {
+    "arm": "alpha",
+    "training_seed": 424242,
+    "episodes": 6000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\alpha\\seed_424242\\run_20261117T123157_780024Z_24c06bd3\\agent.npz",
+    "duration": 17.95544359998894,
+    "states": 4305,
+    "epsilon": 0.04974972962361759,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\alpha\\seed_424242\\run_20261117T122825_459573Z_e4b9ef1f",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\alpha\\seed_424242\\run_20261117T123157_780024Z_24c06bd3"
+    ],
+    "last100_mean": 0.08
+  },
+  "epsilon_s424242": {
+    "arm": "epsilon",
+    "training_seed": 424242,
+    "episodes": 10000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\epsilon\\seed_424242\\run_20261117T124031_636686Z_75ddd5b1\\agent.npz",
+    "duration": 48.4649756999861,
+    "states": 7372,
+    "epsilon": 0.01492939942424147,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\epsilon\\seed_424242\\run_20261117T122833_547864Z_63370cdb",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\epsilon\\seed_424242\\run_20261117T123210_204303Z_56bfbef9",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\epsilon\\seed_424242\\run_20261117T124031_636686Z_75ddd5b1"
+    ],
+    "last100_mean": 2.0
+  },
+  "rewards_s424242": {
+    "arm": "rewards",
+    "training_seed": 424242,
+    "episodes": 24000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_424242\\run_20261117T130402_621631Z_1f8f7608\\agent.npz",
+    "duration": 494.6973525999929,
+    "states": 7955,
+    "epsilon": 0.01,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_424242\\run_20261117T122843_242780Z_9fed4a1f",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_424242\\run_20261117T123223_105988Z_57fd0be9",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_424242\\run_20261117T124101_712479Z_0c015a84",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_424242\\run_20261117T130402_621631Z_1f8f7608"
+    ],
+    "last100_mean": 7.77
+  },
+  "combined_s424242": {
+    "arm": "combined",
+    "training_seed": 424242,
+    "episodes": 6000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\combined\\seed_424242\\run_20261117T123236_576736Z_6029a71b\\agent.npz",
+    "duration": 18.688507400016533,
+    "states": 18361,
+    "epsilon": 0.0495762763861988,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\combined\\seed_424242\\run_20261117T122852_837617Z_d332ccd4",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\combined\\seed_424242\\run_20261117T123236_576736Z_6029a71b"
+    ],
+    "last100_mean": 0.02
+  },
+  "focused_s42": {
+    "arm": "focused",
+    "training_seed": 42,
+    "episodes": 24000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\focused\\seed_42\\run_20261117T124440_346368Z_cb8e9cbc\\agent.npz",
+    "duration": 413.19729290006217,
+    "states": 4510,
+    "epsilon": 0.01,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\focused\\seed_42\\run_20261117T123504_004707Z_f0dfac42",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\focused\\seed_42\\run_20261117T124228_165328Z_bc984493",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\focused\\seed_42\\run_20261117T124440_346368Z_cb8e9cbc"
+    ],
+    "last100_mean": 6.09
+  },
+  "focused_s424242": {
+    "arm": "focused",
+    "training_seed": 424242,
+    "episodes": 24000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\focused\\seed_424242\\run_20261117T125805_989234Z_71fe429e\\agent.npz",
+    "duration": 418.63423349999357,
+    "states": 4529,
+    "epsilon": 0.01,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\focused\\seed_424242\\run_20261117T123521_187711Z_74ec0afc",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\focused\\seed_424242\\run_20261117T124320_551273Z_b867bfb8",
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\focused\\seed_424242\\run_20261117T125805_989234Z_71fe429e"
+    ],
+    "last100_mean": 6.28
+  },
+  "focused_s848484": {
+    "arm": "focused",
+    "training_seed": 848484,
+    "episodes": 24000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\focused\\seed_848484\\run_20261117T131119_953260Z_9d361b0d\\agent.npz",
+    "duration": 325.76297419998446,
+    "states": 4483,
+    "epsilon": 0.01,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\focused\\seed_848484\\run_20261117T131119_953260Z_9d361b0d"
+    ],
+    "last100_mean": 5.46
+  },
+  "rewards_s848484": {
+    "arm": "rewards",
+    "training_seed": 848484,
+    "episodes": 24000,
+    "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_848484\\run_20261117T131651_541238Z_3af48d06\\agent.npz",
+    "duration": 553.3778331000067,
+    "states": 8089,
+    "epsilon": 0.01,
+    "runs": [
+      "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_848484\\run_20261117T131651_541238Z_3af48d06"
+    ],
+    "last100_mean": 8.78
+  }
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "arm": "focused",
+    "replicas": 2,
+    "worst_median": 8.5,
+    "worst_p10": 2.0,
+    "worst_lower_tail": 1.2,
+    "mean_median": 22.25,
+    "mean_score": 28.975,
+    "mean_success": 0.105
+  },
+  {
+    "arm": "rewards",
+    "replicas": 2,
+    "worst_median": 5.0,
+    "worst_p10": 1.0,
+    "worst_lower_tail": 0.6,
+    "mean_median": 6.5,
+    "mean_score": 9.209999999999999,
+    "mean_success": 0.0
+  },
+  {
+    "arm": "gamma",
+    "replicas": 2,
+    "worst_median": 2.0,
+    "worst_p10": 1.0,
+    "worst_lower_tail": 0.1,
+    "mean_median": 3.0,
+    "mean_score": 4.300000000000001,
+    "mean_success": 0.0
+  },
+  {
+    "arm": "control",
+    "replicas": 2,
+    "worst_median": 2.0,
+    "worst_p10": 0.9000000000000004,
+    "worst_lower_tail": 0.0,
+    "mean_median": 2.0,
+    "mean_score": 2.8049999999999997,
+    "mean_success": 0.0
+  },
+  {
+    "arm": "epsilon",
+    "replicas": 2,
+    "worst_median": 2.0,
+    "worst_p10": 0.0,
+    "worst_lower_tail": 0.0,
+    "mean_median": 2.75,
+    "mean_score": 3.995,
+    "mean_success": 0.0
+  },
+  {
+    "arm": "intermediate",
+    "replicas": 2,
+    "worst_median": 1.0,
+    "worst_p10": 0.0,
+    "worst_lower_tail": 0.0,
+    "mean_median": 1.0,
+    "mean_score": 1.435,
+    "mean_success": 0.0
+  }
+]

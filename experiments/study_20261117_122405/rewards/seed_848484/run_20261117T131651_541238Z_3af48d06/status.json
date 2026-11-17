@@ -1,0 +1,8 @@
+{
+  "status": "completed",
+  "episodes": 24000,
+  "epsilon": 0.01,
+  "training_seconds": 553.3778331000067,
+  "completed_rows": 24000,
+  "partial_episode_saved": false
+}

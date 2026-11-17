@@ -1,0 +1,8 @@
+{
+  "original_main_loader_verified": true,
+  "episodes": 24000,
+  "states": 7955,
+  "q_sha256": "cf9567be6e3b4a3c795c2043114c6b26cb4b87f8dd9bca463612f332b9b56621",
+  "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\recommended_compatible_agent.npz",
+  "metadata_change": "Only omitted unused state_ranges=None; Q-table unchanged"
+}

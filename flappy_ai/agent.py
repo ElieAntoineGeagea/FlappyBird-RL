@@ -7,6 +7,7 @@ from pathlib import Path
 from dataclasses import asdict
 import numpy as np
 from .config import Config, GameConfig, RewardConfig, TrainingConfig
+from .storage import replace_with_retry
 
 class QAgent:
     def __init__(self, config, seed=None):
@@ -19,7 +20,7 @@ class QAgent:
 
     def state(self, observation):
         g = self.config.game
-        ranges = [(0,g.ground), (g.flap_velocity,g.max_velocity), (-g.pipe_width-g.bird_radius,g.width), (-g.ground,g.ground), (-g.ground,g.ground)]
+        ranges = self.config.training.state_ranges or [(0,g.ground), (g.flap_velocity,g.max_velocity), (-g.pipe_width-g.bird_radius,g.width), (-g.ground,g.ground), (-g.ground,g.ground)]
         return tuple(max(0, min(n-1, int((v-lo)/(hi-lo)*n))) for v,(lo,hi),n in zip(observation,ranges,self.config.training.bins))
 
     def values(self, state):
@@ -53,7 +54,7 @@ class QAgent:
                                     metadata=json.dumps(meta))
                 f.flush()
                 os.fsync(f.fileno())
-            os.replace(temp, path)
+            replace_with_retry(temp, path)
         finally:
             if temp is not None:
                 temp.unlink(missing_ok=True)

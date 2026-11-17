@@ -1,0 +1,115 @@
+Training outputs: C:\Users\User\Documents\FlappyBird-RL-Experiments\experiments\study_20261117_122405\epsilon\seed_424242\run_20261117T122833_547864Z_63370cdb
+P pause/resume, C checkpoint, S stop (Windows terminal); Ctrl+C saves and stops.
+Control files in this run folder: PAUSE, CHECKPOINT, STOP.
+Episode 1 | epsilon 0.2999 | score 0 | reward -6.65 | average 0.00
+Episode 100 | epsilon 0.2911 | score 0 | reward -7.25 | average 0.00
+Episode 200 | epsilon 0.2825 | score 0 | reward -7.05 | average 0.00
+Episode 300 | epsilon 0.2742 | score 0 | reward -7.50 | average 0.00
+Episode 400 | epsilon 0.2661 | score 0 | reward -7.25 | average 0.00
+Episode 500 | epsilon 0.2582 | score 0 | reward -6.85 | average 0.00
+Episode 600 | epsilon 0.2506 | score 0 | reward -7.40 | average 0.00
+Episode 700 | epsilon 0.2432 | score 0 | reward -6.35 | average 0.00
+Episode 800 | epsilon 0.2360 | score 0 | reward -7.15 | average 0.00
+Episode 900 | epsilon 0.2290 | score 0 | reward -7.45 | average 0.00
+Episode 1000 | epsilon 0.2222 | score 0 | reward -7.40 | average 0.00
+Episode 1100 | epsilon 0.2157 | score 0 | reward -7.00 | average 0.00
+Episode 1200 | epsilon 0.2093 | score 0 | reward -7.15 | average 0.00
+Episode 1300 | epsilon 0.2031 | score 0 | reward -6.95 | average 0.00
+Episode 1400 | epsilon 0.1971 | score 0 | reward -4.20 | average 0.00
+Episode 1500 | epsilon 0.1913 | score 0 | reward -6.90 | average 0.00
+Episode 1600 | epsilon 0.1856 | score 0 | reward -6.95 | average 0.00
+Episode 1700 | epsilon 0.1801 | score 0 | reward -7.35 | average 0.00
+Episode 1800 | epsilon 0.1748 | score 0 | reward -6.70 | average 0.00
+Episode 1900 | epsilon 0.1696 | score 0 | reward -4.15 | average 0.01
+Episode 2000 | epsilon 0.1646 | score 0 | reward -5.55 | average 0.00
+Episode 2100 | epsilon 0.1598 | score 0 | reward -7.25 | average 0.01
+Episode 2200 | epsilon 0.1550 | score 0 | reward -7.20 | average 0.00
+Episode 2300 | epsilon 0.1505 | score 0 | reward -6.35 | average 0.00
+Episode 2400 | epsilon 0.1460 | score 0 | reward -7.30 | average 0.00
+Episode 2500 | epsilon 0.1417 | score 0 | reward -7.20 | average 0.00
+Episode 2600 | epsilon 0.1375 | score 0 | reward -4.15 | average 0.00
+Episode 2700 | epsilon 0.1334 | score 0 | reward -4.15 | average 0.00
+Episode 2800 | epsilon 0.1295 | score 0 | reward -7.40 | average 0.00
+Episode 2900 | epsilon 0.1257 | score 0 | reward -7.05 | average 0.00
+Episode 3000 | epsilon 0.1220 | score 0 | reward -4.85 | average 0.00
+Training completed. Saved agent and statistics: C:\Users\User\Documents\FlappyBird-RL-Experiments\experiments\study_20261117_122405\epsilon\seed_424242\run_20261117T122833_547864Z_63370cdb
+Training outputs: C:\Users\User\Documents\FlappyBird-RL-Experiments\experiments\study_20261117_122405\epsilon\seed_424242\run_20261117T123210_204303Z_56bfbef9
+P pause/resume, C checkpoint, S stop (Windows terminal); Ctrl+C saves and stops.
+Control files in this run folder: PAUSE, CHECKPOINT, STOP.
+Episode 3001 | epsilon 0.1219 | score 0 | reward -6.30 | average 0.00
+Episode 3100 | epsilon 0.1183 | score 0 | reward -5.25 | average 0.02
+Episode 3200 | epsilon 0.1149 | score 0 | reward -6.25 | average 0.03
+Episode 3300 | epsilon 0.1115 | score 0 | reward -7.10 | average 0.00
+Episode 3400 | epsilon 0.1082 | score 0 | reward -4.35 | average 0.01
+Episode 3500 | epsilon 0.1050 | score 0 | reward -7.05 | average 0.00
+Episode 3600 | epsilon 0.1019 | score 0 | reward -7.30 | average 0.00
+Episode 3700 | epsilon 0.0989 | score 0 | reward -7.45 | average 0.02
+Episode 3800 | epsilon 0.0959 | score 0 | reward -7.25 | average 0.03
+Episode 3900 | epsilon 0.0931 | score 0 | reward -7.05 | average 0.01
+Episode 4000 | epsilon 0.0903 | score 0 | reward -4.15 | average 0.02
+Episode 4100 | epsilon 0.0877 | score 0 | reward -5.70 | average 0.03
+Episode 4200 | epsilon 0.0851 | score 0 | reward -4.70 | average 0.03
+Episode 4300 | epsilon 0.0826 | score 2 | reward 23.85 | average 0.08
+Episode 4400 | epsilon 0.0801 | score 0 | reward -6.80 | average 0.03
+Episode 4500 | epsilon 0.0778 | score 1 | reward 9.85 | average 0.05
+Episode 4600 | epsilon 0.0755 | score 0 | reward -4.95 | average 0.05
+Episode 4700 | epsilon 0.0732 | score 0 | reward -5.35 | average 0.07
+Episode 4800 | epsilon 0.0711 | score 0 | reward -4.90 | average 0.12
+Episode 4900 | epsilon 0.0690 | score 0 | reward -4.15 | average 0.04
+Episode 5000 | epsilon 0.0669 | score 0 | reward -4.95 | average 0.04
+Episode 5100 | epsilon 0.0649 | score 1 | reward 10.45 | average 0.11
+Episode 5200 | epsilon 0.0630 | score 0 | reward -2.75 | average 0.11
+Episode 5300 | epsilon 0.0612 | score 0 | reward -4.15 | average 0.16
+Episode 5400 | epsilon 0.0594 | score 0 | reward -4.15 | average 0.20
+Episode 5500 | epsilon 0.0576 | score 0 | reward -4.15 | average 0.14
+Episode 5600 | epsilon 0.0559 | score 0 | reward -4.70 | average 0.14
+Episode 5700 | epsilon 0.0542 | score 0 | reward -6.80 | average 0.14
+Episode 5800 | epsilon 0.0526 | score 0 | reward -4.15 | average 0.32
+Episode 5900 | epsilon 0.0511 | score 0 | reward -4.15 | average 0.34
+Episode 6000 | epsilon 0.0496 | score 1 | reward 9.80 | average 0.33
+Training completed. Saved agent and statistics: C:\Users\User\Documents\FlappyBird-RL-Experiments\experiments\study_20261117_122405\epsilon\seed_424242\run_20261117T123210_204303Z_56bfbef9
+Training outputs: C:\Users\User\Documents\FlappyBird-RL-Experiments\experiments\study_20261117_122405\epsilon\seed_424242\run_20261117T124031_636686Z_75ddd5b1
+P pause/resume, C checkpoint, S stop (Windows terminal); Ctrl+C saves and stops.
+Control files in this run folder: PAUSE, CHECKPOINT, STOP.
+Episode 6001 | epsilon 0.0496 | score 1 | reward 9.85 | average 1.00
+Episode 6100 | epsilon 0.0481 | score 0 | reward -4.40 | average 0.27
+Episode 6200 | epsilon 0.0467 | score 0 | reward -4.15 | average 0.23
+Episode 6300 | epsilon 0.0453 | score 0 | reward -4.50 | average 0.30
+Episode 6400 | epsilon 0.0440 | score 0 | reward -3.40 | average 0.28
+Episode 6500 | epsilon 0.0427 | score 1 | reward 9.85 | average 0.31
+Episode 6600 | epsilon 0.0414 | score 0 | reward -4.15 | average 0.27
+Episode 6700 | epsilon 0.0402 | score 1 | reward 9.85 | average 0.27
+Episode 6800 | epsilon 0.0390 | score 0 | reward -3.10 | average 0.50
+Episode 6900 | epsilon 0.0378 | score 1 | reward 9.85 | average 0.56
+Episode 7000 | epsilon 0.0367 | score 1 | reward 9.85 | average 0.62
+Episode 7100 | epsilon 0.0356 | score 0 | reward -4.15 | average 0.55
+Episode 7200 | epsilon 0.0346 | score 0 | reward -6.80 | average 0.61
+Episode 7300 | epsilon 0.0336 | score 0 | reward -4.15 | average 0.37
+Episode 7400 | epsilon 0.0326 | score 2 | reward 23.85 | average 0.51
+Episode 7500 | epsilon 0.0316 | score 1 | reward 8.25 | average 0.87
+Episode 7600 | epsilon 0.0307 | score 1 | reward 9.85 | average 0.83
+Episode 7700 | epsilon 0.0298 | score 0 | reward -4.35 | average 0.82
+Episode 7800 | epsilon 0.0289 | score 1 | reward 9.85 | average 0.79
+Episode 7900 | epsilon 0.0280 | score 1 | reward 9.85 | average 0.72
+Episode 8000 | epsilon 0.0272 | score 2 | reward 23.85 | average 1.02
+Episode 8100 | epsilon 0.0264 | score 0 | reward -2.85 | average 0.92
+Episode 8200 | epsilon 0.0256 | score 1 | reward 9.85 | average 1.16
+Episode 8300 | epsilon 0.0249 | score 1 | reward 9.85 | average 0.95
+Episode 8400 | epsilon 0.0241 | score 2 | reward 23.85 | average 0.95
+Episode 8500 | epsilon 0.0234 | score 1 | reward 9.85 | average 0.82
+Episode 8600 | epsilon 0.0227 | score 1 | reward 10.95 | average 1.18
+Episode 8700 | epsilon 0.0221 | score 0 | reward -4.40 | average 0.77
+Episode 8800 | epsilon 0.0214 | score 0 | reward -4.75 | average 0.92
+Episode 8900 | epsilon 0.0208 | score 1 | reward 9.85 | average 1.11
+Episode 9000 | epsilon 0.0202 | score 4 | reward 51.85 | average 1.12
+Episode 9100 | epsilon 0.0196 | score 0 | reward -7.30 | average 1.26
+Episode 9200 | epsilon 0.0190 | score 0 | reward -7.05 | average 1.45
+Episode 9300 | epsilon 0.0184 | score 3 | reward 37.85 | average 1.10
+Episode 9400 | epsilon 0.0179 | score 0 | reward -4.15 | average 1.45
+Episode 9500 | epsilon 0.0173 | score 3 | reward 37.85 | average 1.15
+Episode 9600 | epsilon 0.0168 | score 2 | reward 23.85 | average 1.47
+Episode 9700 | epsilon 0.0163 | score 2 | reward 23.85 | average 2.01
+Episode 9800 | epsilon 0.0159 | score 0 | reward -4.15 | average 1.42
+Episode 9900 | epsilon 0.0154 | score 3 | reward 37.85 | average 1.92
+Episode 10000 | epsilon 0.0149 | score 1 | reward 9.85 | average 2.00
+Training completed. Saved agent and statistics: C:\Users\User\Documents\FlappyBird-RL-Experiments\experiments\study_20261117_122405\epsilon\seed_424242\run_20261117T124031_636686Z_75ddd5b1

@@ -3,6 +3,7 @@ import csv
 import json
 import os
 import tempfile
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 from uuid import uuid4
@@ -17,6 +18,18 @@ def unique_directory(parent, prefix):
     return path
 
 
+def replace_with_retry(source, destination):
+    """Bounded retry for transient Windows file-sharing locks."""
+    for attempt in range(7):
+        try:
+            os.replace(source, destination)
+            return
+        except PermissionError:
+            if attempt == 6:
+                raise
+            time.sleep(.01 * 2 ** attempt)
+
+
 def atomic_json(path, data):
     path = Path(path)
     temporary = None
@@ -26,7 +39,7 @@ def atomic_json(path, data):
             json.dump(data, f, indent=2)
             f.flush()
             os.fsync(f.fileno())
-        os.replace(temporary, path)
+        replace_with_retry(temporary, path)
     finally:
         if temporary is not None:
             temporary.unlink(missing_ok=True)

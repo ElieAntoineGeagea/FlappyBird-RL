@@ -1,0 +1,89 @@
+EVAL baseline benchmark {"mean": 19.425, "median": 10.5, "p10": 2.9000000000000004, "best": 72, "success": 0.0}
+EVAL baseline validation {"mean": 18.37, "median": 12.5, "p10": 1.0, "best": 100, "success": 0.02}
+TRAIN control_s42 0 -> 3000
+Traceback (most recent call last):
+  File "C:\Users\User\Documents\FlappyBird-RL-Experiments\experiment_runner.py", line 219, in <module>
+    if __name__=='__main__': main()
+                             ~~~~^^
+  File "C:\Users\User\Documents\FlappyBird-RL-Experiments\experiment_runner.py", line 201, in main
+    entry=train_job(arm,seed,3000)
+  File "C:\Users\User\Documents\FlappyBird-RL-Experiments\experiment_runner.py", line 110, in train_job
+    rows=train(agent,allowed,directory,control=BudgetControl(plan),checkpoint_seconds=30)
+  File "C:\Users\User\Documents\FlappyBird-RL-Experiments\flappy_ai\training.py", line 178, in train
+    status_file('running')
+    ~~~~~~~~~~~^^^^^^^^^^^
+  File "C:\Users\User\Documents\FlappyBird-RL-Experiments\flappy_ai\training.py", line 103, in status_file
+    atomic_json(run / 'status.json', dict(status=state, episodes=agent.episodes,
+    ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                epsilon=agent.epsilon, training_seconds=agent.duration,
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                completed_rows=len(rows), partial_episode_saved=not env.done))
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\User\Documents\FlappyBird-RL-Experiments\flappy_ai\storage.py", line 29, in atomic_json
+    os.replace(temporary, path)
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^
+PermissionError: [WinError 5] Access is denied: 'C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_42\\run_20261117T122535_293609Z_0802e9b3\\tmpyepscpdi.tmp' -> 'C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_42\\run_20261117T122535_293609Z_0802e9b3\\status.json'
+TRAIN control_s42 1428 -> 3000
+DONE {"arm": "control", "training_seed": 42, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_42\\run_20261117T122632_502766Z_6f460ace\\agent.npz", "duration": 15.73217379997368, "states": 1550, "epsilon": 0.22304647413401948, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_42\\run_20261117T122535_293609Z_0802e9b3", "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_42\\run_20261117T122632_502766Z_6f460ace"], "last100_mean": 0.0}
+EVAL control_s42 benchmark {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+EVAL control_s42 validation {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+TRAIN intermediate_s42 0 -> 3000
+DONE {"arm": "intermediate", "training_seed": 42, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\intermediate\\seed_42\\run_20261117T122635_799809Z_c9c8efef\\agent.npz", "duration": 8.531815499998629, "states": 2040, "epsilon": 0.22304647413401948, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\intermediate\\seed_42\\run_20261117T122635_799809Z_c9c8efef"], "last100_mean": 0.0}
+EVAL intermediate_s42 benchmark {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+EVAL intermediate_s42 validation {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+TRAIN fine_s42 0 -> 3000
+DONE {"arm": "fine", "training_seed": 42, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\fine\\seed_42\\run_20261117T122645_771173Z_e6f1bf37\\agent.npz", "duration": 7.732272699999157, "states": 3091, "epsilon": 0.22304647413401948, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\fine\\seed_42\\run_20261117T122645_771173Z_e6f1bf37"], "last100_mean": 0.0}
+EVAL fine_s42 benchmark {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+EVAL fine_s42 validation {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+TRAIN gamma_s42 0 -> 3000
+DONE {"arm": "gamma", "training_seed": 42, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\gamma\\seed_42\\run_20261117T122654_723594Z_ca5b93c8\\agent.npz", "duration": 7.995455800002674, "states": 1660, "epsilon": 0.22304647413401948, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\gamma\\seed_42\\run_20261117T122654_723594Z_ca5b93c8"], "last100_mean": 0.0}
+EVAL gamma_s42 benchmark {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+EVAL gamma_s42 validation {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+TRAIN alpha_s42 0 -> 3000
+DONE {"arm": "alpha", "training_seed": 42, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\alpha\\seed_42\\run_20261117T122703_893746Z_8aa63bd2\\agent.npz", "duration": 10.044135800009826, "states": 1297, "epsilon": 0.22304647413401948, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\alpha\\seed_42\\run_20261117T122703_893746Z_8aa63bd2"], "last100_mean": 0.0}
+EVAL alpha_s42 benchmark {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+EVAL alpha_s42 validation {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+TRAIN epsilon_s42 0 -> 3000
+DONE {"arm": "epsilon", "training_seed": 42, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\epsilon\\seed_42\\run_20261117T122714_978503Z_845de7e8\\agent.npz", "duration": 8.109699399996316, "states": 3509, "epsilon": 0.1219544296688712, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\epsilon\\seed_42\\run_20261117T122714_978503Z_845de7e8"], "last100_mean": 0.0}
+EVAL epsilon_s42 benchmark {"mean": 0.3, "median": 0.0, "p10": 0.0, "best": 1, "success": 0.0}
+EVAL epsilon_s42 validation {"mean": 0.24, "median": 0.0, "p10": 0.0, "best": 3, "success": 0.0}
+TRAIN rewards_s42 0 -> 3000
+DONE {"arm": "rewards", "training_seed": 42, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_42\\run_20261117T122724_467632Z_97a29fb9\\agent.npz", "duration": 7.049763899995014, "states": 1963, "epsilon": 0.22304647413401948, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_42\\run_20261117T122724_467632Z_97a29fb9"], "last100_mean": 0.0}
+EVAL rewards_s42 benchmark {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+EVAL rewards_s42 validation {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+TRAIN combined_s42 0 -> 3000
+DONE {"arm": "combined", "training_seed": 42, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\combined\\seed_42\\run_20261117T122732_548646Z_ed8102b2\\agent.npz", "duration": 9.034416399983456, "states": 9479, "epsilon": 0.1219544296688712, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\combined\\seed_42\\run_20261117T122732_548646Z_ed8102b2"], "last100_mean": 0.0}
+EVAL combined_s42 benchmark {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+EVAL combined_s42 validation {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+TRAIN control_s424242 0 -> 3000
+DONE {"arm": "control", "training_seed": 424242, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_424242\\run_20261117T122743_119990Z_07030250\\agent.npz", "duration": 8.269980999990366, "states": 1382, "epsilon": 0.22304647413401948, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\control\\seed_424242\\run_20261117T122743_119990Z_07030250"], "last100_mean": 0.0}
+EVAL control_s424242 benchmark {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+EVAL control_s424242 validation {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+TRAIN intermediate_s424242 0 -> 3000
+DONE {"arm": "intermediate", "training_seed": 424242, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\intermediate\\seed_424242\\run_20261117T122752_741625Z_c1e606c3\\agent.npz", "duration": 12.284446700010449, "states": 1922, "epsilon": 0.22304647413401948, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\intermediate\\seed_424242\\run_20261117T122752_741625Z_c1e606c3"], "last100_mean": 0.0}
+EVAL intermediate_s424242 benchmark {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+EVAL intermediate_s424242 validation {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+TRAIN fine_s424242 0 -> 3000
+DONE {"arm": "fine", "training_seed": 424242, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\fine\\seed_424242\\run_20261117T122806_374883Z_9a753724\\agent.npz", "duration": 7.028955499990843, "states": 2863, "epsilon": 0.22304647413401948, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\fine\\seed_424242\\run_20261117T122806_374883Z_9a753724"], "last100_mean": 0.0}
+EVAL fine_s424242 benchmark {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+EVAL fine_s424242 validation {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+TRAIN gamma_s424242 0 -> 3000
+DONE {"arm": "gamma", "training_seed": 424242, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\gamma\\seed_424242\\run_20261117T122814_286480Z_95f56e05\\agent.npz", "duration": 10.17336729998351, "states": 1495, "epsilon": 0.22304647413401948, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\gamma\\seed_424242\\run_20261117T122814_286480Z_95f56e05"], "last100_mean": 0.0}
+EVAL gamma_s424242 benchmark {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+EVAL gamma_s424242 validation {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+TRAIN alpha_s424242 0 -> 3000
+DONE {"arm": "alpha", "training_seed": 424242, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\alpha\\seed_424242\\run_20261117T122825_459573Z_e4b9ef1f\\agent.npz", "duration": 6.919081800006097, "states": 1350, "epsilon": 0.22304647413401948, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\alpha\\seed_424242\\run_20261117T122825_459573Z_e4b9ef1f"], "last100_mean": 0.0}
+EVAL alpha_s424242 benchmark {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+EVAL alpha_s424242 validation {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+TRAIN epsilon_s424242 0 -> 3000
+DONE {"arm": "epsilon", "training_seed": 424242, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\epsilon\\seed_424242\\run_20261117T122833_547864Z_63370cdb\\agent.npz", "duration": 8.287661100010155, "states": 3195, "epsilon": 0.1219544296688712, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\epsilon\\seed_424242\\run_20261117T122833_547864Z_63370cdb"], "last100_mean": 0.0}
+EVAL epsilon_s424242 benchmark {"mean": 0.075, "median": 0.0, "p10": 0.0, "best": 1, "success": 0.0}
+EVAL epsilon_s424242 validation {"mean": 0.03, "median": 0.0, "p10": 0.0, "best": 1, "success": 0.0}
+TRAIN rewards_s424242 0 -> 3000
+DONE {"arm": "rewards", "training_seed": 424242, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_424242\\run_20261117T122843_242780Z_9fed4a1f\\agent.npz", "duration": 8.497975699981907, "states": 2020, "epsilon": 0.22304647413401948, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\rewards\\seed_424242\\run_20261117T122843_242780Z_9fed4a1f"], "last100_mean": 0.0}
+EVAL rewards_s424242 benchmark {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+EVAL rewards_s424242 validation {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+TRAIN combined_s424242 0 -> 3000
+DONE {"arm": "combined", "training_seed": 424242, "episodes": 3000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\combined\\seed_424242\\run_20261117T122852_837617Z_d332ccd4\\agent.npz", "duration": 8.083260600018548, "states": 9785, "epsilon": 0.1219544296688712, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\combined\\seed_424242\\run_20261117T122852_837617Z_d332ccd4"], "last100_mean": 0.0}
+EVAL combined_s424242 benchmark {"mean": 0.0, "median": 0.0, "p10": 0.0, "best": 0, "success": 0.0}
+EVAL combined_s424242 validation {"mean": 0.01, "median": 0.0, "p10": 0.0, "best": 1, "success": 0.0}

@@ -34,6 +34,7 @@ class TrainingConfig:
     epsilon_min: float = 0.01
     epsilon_decay: float = 0.9995
     bins: list = field(default_factory=lambda: [8, 12, 12, 24, 24])
+    state_ranges: list | None = None
     episodes: int = 12000
     checkpoint_every: int = 1000
     seed: int = 42
@@ -81,6 +82,16 @@ class Config:
             raise ValueError('Invalid exploration range or epsilon_decay')
         if not isinstance(t.bins, (list, tuple)) or len(t.bins) != 5 or any(type(b) is not int or not 2 <= b <= 2147483647 for b in t.bins):
             raise ValueError('bins must contain five integers between 2 and 2147483647')
+        if t.state_ranges is not None:
+            if not isinstance(t.state_ranges, list) or len(t.state_ranges) != 5:
+                raise ValueError('state_ranges must contain five [low, high] pairs')
+            for pair in t.state_ranges:
+                if not isinstance(pair, (list, tuple)) or len(pair) != 2:
+                    raise ValueError('Invalid state range pair')
+                for value in pair:
+                    number('state range', value)
+                if not pair[0] < pair[1]:
+                    raise ValueError('State range low must be below high')
         if t.episodes < 1 or t.checkpoint_every < 1 or t.seed < 0:
             raise ValueError('Training counts must be positive integers and seed must be nonnegative')
         return self

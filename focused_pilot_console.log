@@ -1,0 +1,8 @@
+TRAIN focused_s42 0 -> 6000
+DONE {"arm": "focused", "training_seed": 42, "episodes": 6000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\focused\\seed_42\\run_20261117T123504_004707Z_f0dfac42\\agent.npz", "duration": 15.013616500014905, "states": 3130, "epsilon": 0.04974972962361759, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\focused\\seed_42\\run_20261117T123504_004707Z_f0dfac42"], "last100_mean": 0.17}
+EVAL focused_s42 benchmark {"mean": 0.575, "median": 0.0, "p10": 0.0, "best": 3, "success": 0.0}
+EVAL focused_s42 validation {"mean": 0.94, "median": 1.0, "p10": 0.0, "best": 4, "success": 0.0}
+TRAIN focused_s424242 0 -> 6000
+DONE {"arm": "focused", "training_seed": 424242, "episodes": 6000, "model": "C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\focused\\seed_424242\\run_20261117T123521_187711Z_74ec0afc\\agent.npz", "duration": 16.99375679998775, "states": 3129, "epsilon": 0.04974972962361759, "runs": ["C:\\Users\\User\\Documents\\FlappyBird-RL-Experiments\\experiments\\study_20261117_122405\\focused\\seed_424242\\run_20261117T123521_187711Z_74ec0afc"], "last100_mean": 0.15}
+EVAL focused_s424242 benchmark {"mean": 0.5, "median": 0.0, "p10": 0.0, "best": 4, "success": 0.0}
+EVAL focused_s424242 validation {"mean": 0.51, "median": 0.0, "p10": 0.0, "best": 3, "success": 0.0}

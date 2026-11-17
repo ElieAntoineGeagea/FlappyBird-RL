@@ -1,0 +1,8 @@
+{
+  "status": "failed",
+  "episodes": 1428,
+  "epsilon": 0.4895941190882885,
+  "training_seconds": 13.654966899979627,
+  "completed_rows": 1428,
+  "partial_episode_saved": false
+}

@@ -1,0 +1,156 @@
+[
+  {
+    "epoch": 1794918571.441455,
+    "stage": "pilot3000",
+    "decision": "Extend all eight arms to 6000 episodes per training seed",
+    "reason": "All 16 pilot replicas have validation median zero. Epsilon remains .223 (standard) or .122 (reduced-exploration), so lack of early success cannot distinguish an ineffective discretization from insufficient learning. No configuration is claimed effective yet.",
+    "episodes_completed": 48000,
+    "remaining_episode_budget": 216000
+  },
+  {
+    "epoch": 1794918903.6472342,
+    "stage": "screening6000",
+    "stop_arms": [
+      "alpha",
+      "fine",
+      "combined"
+    ],
+    "reason": "All three have lower validation mean than the control on both training seeds, median zero, and negative paired bootstrap mean differences: alpha -0.27 (95% -0.44,-0.13), fine -0.285 (-0.46,-0.12), combined -0.31 (-0.53025,-0.12). Stop for sample-efficiency under this budget; no claim of universal ineffectiveness.",
+    "continue_arms": [
+      "control",
+      "intermediate",
+      "gamma",
+      "epsilon",
+      "rewards"
+    ],
+    "target": 10000
+  },
+  {
+    "epoch": 1794918903.6472366,
+    "stage": "focused_preregistration",
+    "new_arm": "focused",
+    "bins": [
+      4,
+      8,
+      12,
+      24,
+      24
+    ],
+    "state_ranges": [
+      [
+        0,
+        590
+      ],
+      [
+        -6.5,
+        10
+      ],
+      [
+        -83,
+        280
+      ],
+      [
+        -80,
+        255
+      ],
+      [
+        -80,
+        255
+      ]
+    ],
+    "unchanged": "All hyperparameters and rewards equal control",
+    "reason": "Baseline almost never visits unknown states, yet fails at pipe fronts; original 49-pixel relative and 47-pixel horizontal bins alias critical approaches. Focused ranges allocate ~14-pixel relative distance resolution while reducing redundant absolute-height/velocity resolution. Nominal table size 221184 vs baseline 663552. Retains all five observations, no scripted actions.",
+    "pilot_target": 6000,
+    "possible_screening_target": 10000,
+    "seed_replicas": [
+      42,
+      424242
+    ],
+    "budget_note": "Stopping three arms at 6000 saves 24000 planned screening episodes; focused screening costs at most 20000. Total possible study episodes 260000 including two finalists."
+  },
+  {
+    "epoch": 1794919480.285506,
+    "stage": "focused_pilot",
+    "decision": "Continue focused to 10000 for equal-budget screening",
+    "reason": "Focused representation achieves one median of 1 and uses ~3100 states vs ~5000 control at 6000. It is mixed across two seeds, so it is not claimed superior; an equal-budget check is justified by lower memory and comparable early performance."
+  },
+  {
+    "epoch": 1794919480.2855098,
+    "stage": "screening10000",
+    "decision": "Advance two top robust validation configurations to 24000 episodes and a third training seed",
+    "finalists": [
+      "focused",
+      "rewards"
+    ],
+    "ranking": [
+      {
+        "arm": "focused",
+        "replicas": 2,
+        "worst_median": 8.5,
+        "worst_p10": 2.0,
+        "worst_lower_tail": 1.2,
+        "mean_median": 22.25,
+        "mean_score": 28.975,
+        "mean_success": 0.105
+      },
+      {
+        "arm": "rewards",
+        "replicas": 2,
+        "worst_median": 5.0,
+        "worst_p10": 1.0,
+        "worst_lower_tail": 0.6,
+        "mean_median": 6.5,
+        "mean_score": 9.209999999999999,
+        "mean_success": 0.0
+      },
+      {
+        "arm": "gamma",
+        "replicas": 2,
+        "worst_median": 2.0,
+        "worst_p10": 1.0,
+        "worst_lower_tail": 0.1,
+        "mean_median": 3.0,
+        "mean_score": 4.300000000000001,
+        "mean_success": 0.0
+      },
+      {
+        "arm": "control",
+        "replicas": 2,
+        "worst_median": 2.0,
+        "worst_p10": 0.9000000000000004,
+        "worst_lower_tail": 0.0,
+        "mean_median": 2.0,
+        "mean_score": 2.8049999999999997,
+        "mean_success": 0.0
+      },
+      {
+        "arm": "epsilon",
+        "replicas": 2,
+        "worst_median": 2.0,
+        "worst_p10": 0.0,
+        "worst_lower_tail": 0.0,
+        "mean_median": 2.75,
+        "mean_score": 3.995,
+        "mean_success": 0.0
+      },
+      {
+        "arm": "intermediate",
+        "replicas": 2,
+        "worst_median": 1.0,
+        "worst_p10": 0.0,
+        "worst_lower_tail": 0.0,
+        "mean_median": 1.0,
+        "mean_score": 1.435,
+        "mean_success": 0.0
+      }
+    ],
+    "test_not_accessed": true
+  },
+  {
+    "epoch": 1794921183.443715,
+    "stage": "pretest_representative_rule",
+    "decision": "Within winning family, restrict to validation medians >=90% of best, then prefer P10, lower-tail mean, median, mean.",
+    "reason": "Current reward medians 54 vs 52 are practically close while validation P10 differs 3.0 vs 11.8. Do not let a marginal median difference outweigh lower-tail reliability. Rule is recorded before any locked-test access; family ranking unchanged.",
+    "test_not_accessed": true
+  }
+]

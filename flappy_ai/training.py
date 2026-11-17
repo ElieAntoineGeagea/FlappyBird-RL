@@ -175,7 +175,8 @@ def train(agent, episodes, output, render=False, control=None, checkpoint_second
                       f"reward {total:.2f} | average {row['rolling_average']:.2f}", flush=True)
             if agent.episodes % agent.config.training.checkpoint_every == 0:
                 save_checkpoint(named=True)
-            status_file('running')
+            if agent.episodes % 100 == 0:
+                status_file('running')
         status = 'stopped' if control.stop else 'completed'
     except KeyboardInterrupt:
         status = 'interrupted'
